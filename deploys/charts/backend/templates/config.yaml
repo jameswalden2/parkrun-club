@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: po10-backend-configmap
+data:
+  DATABASE_HOST: {{ .Values.database.host | quote }}
+  DATABASE_PORT: {{ .Values.database.port | toString | quote }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: po10-backend-db-secret
+type: Opaque
+data:
+  username: {{ .Values.database.username | b64enc | quote }}
+  password: {{ .Values.database.password | b64enc | quote }}

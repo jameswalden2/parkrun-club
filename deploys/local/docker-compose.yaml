@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # Use postgres/example user/password credentials
+  parkrunclub-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: po10
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+    volumes:
+      - ./artifacts/pgdata:/var/lib/postgresql/data
+    networks:
+      - parkrunclub
+
+  # this is included to be a ready to use db client if no running dbeaver etc
+  adminer:
+    image: adminer
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: po10-db
+      ADMINER_DEFAULT_SYSTEM: PostgreSQL
+      ADMINER_DEFAULT_DB_DRIVER: psql
+      ADMINER_DEFAULT_DB_NAME: po10
+      # ADMINER_DESIGN: pepa-linha-dark
+    ports:
+      - 8080:8080
+    networks:
+      - parkrunclub
+
+  parkrunclub-pipelines:
+    build:
+      context: ../..
+      dockerfile: backend/Dockerfile
+    image: po10-backend
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=example
+      - DB_HOST=po10-db
+      - DB_PORT=5432
+      - DB_NAME=po10
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - 8000:8000
+    volumes:
+      - ../../backend/:/backend/
+    networks:
+      - parkrunclub
+
+  parkrunclub-frontend:
+    build:
+      context: ../..
+      dockerfile: frontend/Dockerfile
+    image: po10-frontend
+    working_dir: /app
+    environment:
+      - REACT_APP_BACKEND_SERVICE_NAME=po10-backend
+      - REACT_APP_BACKEND_PORT=8000
+    ports:
+      - 3000:3000
+    depends_on:
+      - po10-backend
+    volumes:
+      - ../../frontend/src/:/app/src/
+    networks:
+      - parkrunclub
+
+
+networks:
+  parkrunclub:
+    name: parkrunclub
+    driver: bridge

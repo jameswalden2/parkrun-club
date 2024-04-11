@@ -1,0 +1,901 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aviemore parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.8193045872306186,
+          57.20538670982941
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Torvean parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.24736434808122,
+          57.46310742430168
+        ],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kirkcaldy parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1704067626889696,
+          56.10457381621404
+        ],
+        "type": "Point"
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alness Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.257724313148799,
+          57.69545245864688
+        ],
+        "type": "Point"
+      },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Elgin Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.3131020768687733,
+          57.65333736090503
+        ],
+        "type": "Point"
+      },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Thurso Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.5215914733321085,
+          58.589616693478234
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ellon Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.056986871691919,
+          57.359242968359354
+        ],
+        "type": "Point"
+      },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kirkwall Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.948230530138318,
+          58.982359676019314
+        ],
+        "type": "Point"
+      },
+      "id": 7
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bressay Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.1199345787176185,
+          60.15807818673565
+        ],
+        "type": "Point"
+      },
+      "id": 8
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lews Castle Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -6.396735416096988,
+          58.20837201264925
+        ],
+        "type": "Point"
+      },
+      "id": 9
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fort William Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.998952342206877,
+          56.85157092232606
+        ],
+        "type": "Point"
+      },
+      "id": 10
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ganavan Sands Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -5.4689537357936615,
+          56.43808231742926
+        ],
+        "type": "Point"
+      },
+      "id": 11
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mount Stuart Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -5.019219820454936,
+          55.792943508404704
+        ],
+        "type": "Point"
+      },
+      "id": 12
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Largs Prom Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.873557515916133,
+          55.80227507372362
+        ],
+        "type": "Point"
+      },
+      "id": 13
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Greenock Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.767382939788519,
+          55.956728498638086
+        ],
+        "type": "Point"
+      },
+      "id": 14
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Levengrove Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.575644027257454,
+          55.940733110024524
+        ],
+        "type": "Point"
+      },
+      "id": 15
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eskrine Waterfront Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.447767739150237,
+          55.90780910967948
+        ],
+        "type": "Point"
+      },
+      "id": 16
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Drumchapel Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.350522544557094,
+          55.91681250716252
+        ],
+        "type": "Point"
+      },
+      "id": 17
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Linwood Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.505066463570216,
+          55.85402730846485
+        ],
+        "type": "Point"
+      },
+      "id": 18
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Victoria Parkrun, Glasgow"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.332447365212005,
+          55.87768994311983
+        ],
+        "type": "Point"
+      },
+      "id": 19
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Elder Park Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.321992982225538,
+          55.86322258256743
+        ],
+        "type": "Point"
+      },
+      "id": 20
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ruchill Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.276107495637376,
+          55.88454632559319
+        ],
+        "type": "Point"
+      },
+      "id": 21
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Springburn Parkrun, Glasgow"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.224852747882778,
+          55.889774472354134
+        ],
+        "type": "Point"
+      },
+      "id": 22
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pollok Parkrun, Glasgow"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.308060331445034,
+          55.8298785783453
+        ],
+        "type": "Point"
+      },
+      "id": 23
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Queen's parkrun, Glasgow"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.270470643873409,
+          55.833551599298886
+        ],
+        "type": "Point"
+      },
+      "id": 24
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tollcross Parkrun, Glasgow"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.179479111234457,
+          55.84747667387643
+        ],
+        "type": "Point"
+      },
+      "id": 25
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Drumpellier Country Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.065608340869119,
+          55.87160152556939
+        ],
+        "type": "Point"
+      },
+      "id": 26
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Palacerigg Country Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.94964774355131,
+          55.93689760066633
+        ],
+        "type": "Point"
+      },
+      "id": 27
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Falkirk Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.766871863067877,
+          55.995462608132925
+        ],
+        "type": "Point"
+      },
+      "id": 28
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Plean Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.881481962787518,
+          56.057774359765915
+        ],
+        "type": "Point"
+      },
+      "id": 29
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "University of Stirling Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.92415007609776,
+          56.14730960530312
+        ],
+        "type": "Point"
+      },
+      "id": 30
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dunfermline Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.4707231450809672,
+          56.07071471309237
+        ],
+        "type": "Point"
+      },
+      "id": 31
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lochore Meadows Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.337188811002875,
+          56.1507383646308
+        ],
+        "type": "Point"
+      },
+      "id": 32
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Loch Leven Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.358010132429598,
+          56.21947763355129
+        ],
+        "type": "Point"
+      },
+      "id": 33
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St Andrews Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.8384091794699486,
+          56.317703417443795
+        ],
+        "type": "Point"
+      },
+      "id": 34
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Perth Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.435499627685033,
+          56.40516547718491
+        ],
+        "type": "Point"
+      },
+      "id": 35
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Camperdown Park, Dundee"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.0308521207547017,
+          56.483782747554756
+        ],
+        "type": "Point"
+      },
+      "id": 36
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "West Links Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.602839654327852,
+          56.55152915514489
+        ],
+        "type": "Point"
+      },
+      "id": 37
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Montrose Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.4551868272105253,
+          56.726362289302074
+        ],
+        "type": "Point"
+      },
+      "id": 38
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stonehaven Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.212660294970192,
+          56.969940770700305
+        ],
+        "type": "Point"
+      },
+      "id": 39
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Crathes Castle Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.4410580746715027,
+          57.06108869751583
+        ],
+        "type": "Point"
+      },
+      "id": 40
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hazlehead Parkrun, Aberdeen"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.1757505074797336,
+          57.141299169981835
+        ],
+        "type": "Point"
+      },
+      "id": 41
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aberdeen Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.0864808185533263,
+          57.17398941780368
+        ],
+        "type": "Point"
+      },
+      "id": 42
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ury Riverside Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.3718911724746476,
+          57.29207846539012
+        ],
+        "type": "Point"
+      },
+      "id": 43
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Auldcathie District Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.477675148575031,
+          55.963267272393864
+        ],
+        "type": "Point"
+      },
+      "id": 44
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Edinburgh Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.2914344816386745,
+          55.978819120114395
+        ],
+        "type": "Point"
+      },
+      "id": 45
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Holyrood Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.162971622196011,
+          55.95211007286238
+        ],
+        "type": "Point"
+      },
+      "id": 46
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Portobello Parkrun, Edinburgh"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.122709795878194,
+          55.95064791066869
+        ],
+        "type": "Point"
+      },
+      "id": 47
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Meadowmill Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.9666580058833176,
+          55.95434219181084
+        ],
+        "type": "Point"
+      },
+      "id": 48
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oriam Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.3175196920341534,
+          55.909801056335226
+        ],
+        "type": "Point"
+      },
+      "id": 49
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Livingston Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.5190045381307584,
+          55.88679286313308
+        ],
+        "type": "Point"
+      },
+      "id": 50
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vogrie Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.995004606546672,
+          55.85686635821551
+        ],
+        "type": "Point"
+      },
+      "id": 51
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Crichton Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.5945501735080256,
+          55.05077655576346
+        ],
+        "type": "Point"
+      },
+      "id": 52
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Carlingwark Loch Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.927159321178351,
+          54.93490933126762
+        ],
+        "type": "Point"
+      },
+      "id": 53
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Agnew Parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -5.034948627925189,
+          54.90819496815746
+        ],
+        "type": "Point"
+      },
+      "id": 54
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eglinton parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.669530083746309,
+          55.643922484880704
+        ],
+        "type": "Point"
+      },
+      "id": 55
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Troon parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.6700802067866505,
+          55.54143363877728
+        ],
+        "type": "Point"
+      },
+      "id": 56
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dean Castle Country Park parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.483226437101251,
+          55.6230048206763
+        ],
+        "type": "Point"
+      },
+      "id": 57
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ayr parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.624036949993041,
+          55.43622068617705
+        ],
+        "type": "Point"
+      },
+      "id": 58
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Girvan Prom parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.862578987488064,
+          55.2438147085623
+        ],
+        "type": "Point"
+      },
+      "id": 59
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Strathclyde parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.031407666250487,
+          55.78959303008895
+        ],
+        "type": "Point"
+      },
+      "id": 60
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lanark Moor parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.7504477669697565,
+          55.66638329701303
+        ],
+        "type": "Point"
+      },
+      "id": 61
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hay Lodge parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.199627021737541,
+          55.6516600608729
+        ],
+        "type": "Point"
+      },
+      "id": 62
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Wallaceneuk parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.448288649083679,
+          55.58582391952197
+        ],
+        "type": "Point"
+      },
+      "id": 63
+    }
+  ]
+}

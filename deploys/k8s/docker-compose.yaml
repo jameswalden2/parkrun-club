@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  po10-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: po10
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+    volumes:
+      - ./artifacts/pgdata:/var/lib/postgresql/data
+    networks:
+      - po10-k8s
+
+  image-registry:
+    image: registry:2
+    container_name: image-registry
+    ports:
+      - "5001:5000"
+    networks:
+      - po10-k8s
+
+  build-service:
+    build:
+      context: ../..
+      dockerfile: deploys/k8s/build_service/Dockerfile
+    image: build-service
+    environment:
+      - REGISTRY_PORT=5001
+    entrypoint: ["/bin/bash" , "-c"]
+    command:
+      - |
+        set -e
+        bash deploys/k8s/build_service/build_service.sh "localhost:5001/po10-backend" "backend/Dockerfile"
+        bash deploys/k8s/build_service/build_service.sh "localhost:5001/po10-frontend" "frontend/Dockerfile"
+
+        tail -f /dev/null
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../../backend:/app/backend
+      - ../../frontend:/app/frontend
+      - ../../deploys:/app/deploys
+    depends_on:
+      image-registry:
+        condition: service_started
+    networks:
+      - po10-k8s
+
+
+networks:
+  po10:
+    name: po10-k8s
+    driver: bridge

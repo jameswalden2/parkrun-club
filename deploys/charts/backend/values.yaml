@@ -1,0 +1,53 @@
+# Default values for backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This applies if using minikube to host the
+localClusterHost: &localClusterHost "host.minikube.internal"
+
+appLabel: po10.backend
+
+namespace: po10-local
+
+replicaCount: 1
+
+repository:
+  url: *localClusterHost
+  port: 5001
+
+image:
+  repository: po10-backend
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+database:
+  host: *localClusterHost
+  port: 5432
+  username: postgres
+  password: password
+
+service:
+  name: po10-backend-service
+  type: ClusterIP
+  port: 8000
+  targetPort: 8000
+
+ingressRoute:
+  name: po10-backend-ingress
+  host: api.po10.com
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""

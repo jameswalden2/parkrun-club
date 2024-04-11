@@ -1,0 +1,607 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Severn Bridge parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.664629830331478,
+          51.61907798261632
+        ],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rogiet parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.779953644336757,
+          51.583245134721466
+        ],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Riverfront parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.9934057917633083,
+          51.588673003500844
+        ],
+        "type": "Point"
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Newport parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.0310659438474374,
+          51.559580537993526
+        ],
+        "type": "Point"
+      },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tremorfa parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.132784782297989,
+          51.48631211641674
+        ],
+        "type": "Point"
+      },
+      "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Grangemoor parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1925179404815367,
+          51.45453074510306
+        ],
+        "type": "Point"
+      },
+      "id": 5
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Trelai Park parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.232951102099179,
+          51.47891455554878
+        ],
+        "type": "Point"
+      },
+      "id": 6
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cardiff parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.207410781026624,
+          51.49736068342361
+        ],
+        "type": "Point"
+      },
+      "id": 7
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Llanishen Park parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1963375225699053,
+          51.529575861135726
+        ],
+        "type": "Point"
+      },
+      "id": 8
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Coed Cefn-pwll-du parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.140946757029951,
+          51.59190167271967
+        ],
+        "type": "Point"
+      },
+      "id": 9
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cosmeston Lakes parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1855591002260724,
+          51.418063300205176
+        ],
+        "type": "Point"
+      },
+      "id": 10
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Barry Island parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.271397602307161,
+          51.390194588067004
+        ],
+        "type": "Point"
+      },
+      "id": 11
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Porthcawl parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.706073021778252,
+          51.47621630740093
+        ],
+        "type": "Point"
+      },
+      "id": 12
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Swansea Bay parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.9668714759387456,
+          51.61104227387702
+        ],
+        "type": "Point"
+      },
+      "id": 13
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sandy Water parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.174670663504429,
+          51.68023618217151
+        ],
+        "type": "Point"
+      },
+      "id": 14
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Colby parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.6699830984480855,
+          51.74067194123012
+        ],
+        "type": "Point"
+      },
+      "id": 15
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Milford Waterfront parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -5.031475480072828,
+          51.71080319698092
+        ],
+        "type": "Point"
+      },
+      "id": 16
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Haverfordwest parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.992792392567452,
+          51.79713714865417
+        ],
+        "type": "Point"
+      },
+      "id": 17
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Llyn Llech Owain parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.080494220409776,
+          51.81284755105412
+        ],
+        "type": "Point"
+      },
+      "id": 18
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Brynaman parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.8699444944633967,
+          51.80833548235441
+        ],
+        "type": "Point"
+      },
+      "id": 19
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gnoll parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.788561183427106,
+          51.661151446199
+        ],
+        "type": "Point"
+      },
+      "id": 20
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Maesteg parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.6655803879332325,
+          51.609490997436296
+        ],
+        "type": "Point"
+      },
+      "id": 21
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aberfields parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.5382655694983782,
+          51.6146195237296
+        ],
+        "type": "Point"
+      },
+      "id": 22
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pontypridd parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.339045120776575,
+          51.60198678406485
+        ],
+        "type": "Point"
+      },
+      "id": 23
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Penallta parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.2457092216776005,
+          51.644913316085024
+        ],
+        "type": "Point"
+      },
+      "id": 24
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cwmbran parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.0134810452218517,
+          51.65624663728008
+        ],
+        "type": "Point"
+      },
+      "id": 25
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pontypool parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.028592352990273,
+          51.699250893267305
+        ],
+        "type": "Point"
+      },
+      "id": 26
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aberbeeg parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1444053192287242,
+          51.711096749471494
+        ],
+        "type": "Point"
+      },
+      "id": 27
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Merthyr parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.3756832267732193,
+          51.738950660447045
+        ],
+        "type": "Point"
+      },
+      "id": 28
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aberdare parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.4602267656152605,
+          51.718887862120795
+        ],
+        "type": "Point"
+      },
+      "id": 29
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bryn Bach parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.2695222994135804,
+          51.781677544628224
+        ],
+        "type": "Point"
+      },
+      "id": 30
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Teifi Marshes Nature Reserve parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.648159882430718,
+          52.07356748071692
+        ],
+        "type": "Point"
+      },
+      "id": 31
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Llanerchaeron parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.235919323981989,
+          52.22046001552695
+        ],
+        "type": "Point"
+      },
+      "id": 32
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Groe parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.403117794093106,
+          52.15044753878013
+        ],
+        "type": "Point"
+      },
+      "id": 33
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Riverside Walk parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1270224164700835,
+          52.07595811929619
+        ],
+        "type": "Point"
+      },
+      "id": 34
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aberystwyth parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.080380300622636,
+          52.414519530930164
+        ],
+        "type": "Point"
+      },
+      "id": 35
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Newtown parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.3189605241774416,
+          52.51459719169361
+        ],
+        "type": "Point"
+      },
+      "id": 36
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dolgellau parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.8866673101481695,
+          52.744607536810605
+        ],
+        "type": "Point"
+      },
+      "id": 37
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pont y Bala parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.593240781093442,
+          52.91241250818766
+        ],
+        "type": "Point"
+      },
+      "id": 38
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hafan Pwllheli parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -4.402930093420508,
+          52.88861345312151
+        ],
+        "type": "Point"
+      },
+      "id": 39
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Old Railway Trail parkrun, Llangollen "
+      },
+      "geometry": {
+        "coordinates": [
+          -3.1598214485379685,
+          52.97010092203351
+        ],
+        "type": "Point"
+      },
+      "id": 40
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Erddig parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.006844323975997,
+          53.02711507916206
+        ],
+        "type": "Point"
+      },
+      "id": 41
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Wepre parkrun"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.056878125038679,
+          53.205647870383785
+        ],
+        "type": "Point"
+      },
+      "id": 42
+    }
+  ]
+}
