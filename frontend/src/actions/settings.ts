@@ -2,7 +2,6 @@
 
 import * as z from "zod";
 
-import { unstable_update } from "@baseauth";
 import { db } from "@/lib/prisma";
 import { SettingsSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
@@ -25,12 +24,6 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
         where: { id: dbUser.id },
         data: {
             ...values,
-        },
-    });
-
-    unstable_update({
-        user: {
-            theme: "things",
         },
     });
 

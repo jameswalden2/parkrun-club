@@ -24,3 +24,21 @@ export function secondsToHMS(seconds: string | number | number[]): string {
     const timeParts = [hh, mm, ss].filter((part) => part !== ""); // Remove empty parts
     return timeParts.join(":");
 }
+
+export async function copyTextToClipboard(text: string): Promise<boolean> {
+    if (!text) {
+        console.error(`Text not available: '${text}'.`);
+        return;
+    }
+
+    try {
+        // Try to copy text to the clipboard
+        await navigator.clipboard.writeText(text);
+        console.log(`Text copied to clipboard: ${text}`);
+        return true;
+    } catch (error) {
+        // Handle potential errors (e.g., user denied clipboard access)
+        console.error("Error copying text to clipboard:", error);
+        return false;
+    }
+}

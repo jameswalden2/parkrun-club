@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:password@localhost:3306/auth"
+  url      = env("PRISMA_DB_URL")
 }
 
 model Account {
@@ -53,7 +53,12 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  activeParkrunClubId  Int?
+  activeParkrunClub   ParkrunClub?         @relation(name: "activeParkrunClub", fields: [activeParkrunClubId], references: [id])
+
   completedParkruns      CompletedParkrun[]
+  parkrunClubsOwned           ParkrunClub[] @relation(name: "ownedBy")
+  memberships           ParkrunClubMembership[]
 
   @@map(name: "users")
 }
@@ -93,4 +98,35 @@ model CompletedParkrun {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
 
   @@map("completed_parkruns")
+}
+
+model ParkrunClub {
+  id            Int       @id @default(autoincrement())
+  name          String
+  uniqueCode    String  @unique
+
+  userId      Int       @map("user_id")
+
+  owner         User     @relation(name: "ownedBy", fields: [userId], references: [id], onDelete: NoAction)
+
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+  membership  ParkrunClubMembership[]
+  usersWithActive User[] @relation(name: "activeParkrunClub")
+
+ @@map("parkrun_clubs")
+ @@unique([userId, name], name: "clubNamePerUserUniqueConstraint")
+}
+
+model ParkrunClubMembership {
+  id Int       @id @default(autoincrement())
+  userId Int
+  parkrunClubId Int
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+  parkrunClub         ParkrunClub     @relation(fields: [parkrunClubId], references: [id], onDelete: NoAction)
+
+  @@map("parkrun_club_memberships")
+  @@unique([userId, parkrunClubId], name: "oneMembershipPerUserPerClubUniqueConstraint")
 }

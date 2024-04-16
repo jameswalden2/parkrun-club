@@ -15,6 +15,7 @@ export const login = async (
     const validatedFields = LoginSchema.safeParse(values);
 
     if (!validatedFields.success) {
+        console.log("invalid fields");
         return { error: "Invalid fields!" };
     }
 
@@ -23,6 +24,7 @@ export const login = async (
     const existingUser = await getUserByUsername(username);
 
     if (!existingUser || !existingUser.username || !existingUser.password) {
+        console.log("username doesn't exist");
         return { error: "Username does not exist!" };
     }
 

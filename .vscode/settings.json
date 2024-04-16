@@ -17,6 +17,6 @@
   "python.formatting.provider": "none",
   "circleci.filters.branchFilter": "allBranches",
   "editor.tokenColorCustomizations": {
-    "functions": "#e0be00"
-  }
+    "functions": "#ee2fbb"
+  },
  }

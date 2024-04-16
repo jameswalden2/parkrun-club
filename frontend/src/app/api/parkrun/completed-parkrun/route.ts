@@ -27,17 +27,3 @@ export async function DELETE(request: NextRequest) {
     });
     return NextResponse.json(deletedParkrun);
 }
-
-export async function GET(request: NextRequest) {
-    console.log("GET");
-    const user = await currentUser();
-    const parkruns = await db.completedParkrun.findMany({
-        where: {
-            userId: Number(user.id),
-        },
-        include: {
-            parkrun: true,
-        },
-    });
-    return NextResponse.json(parkruns.length > 0 ? parkruns : []);
-}

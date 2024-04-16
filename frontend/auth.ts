@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/prisma";
 import authConfig from "./auth.config";
 import { getUserById } from "@/data/user";
+import { UserType } from "@/types/UserTypes";
 
 export const {
     handlers: { GET, POST },
@@ -19,16 +20,14 @@ export const {
     },
     callbacks: {
         async signIn({ user, account }) {
-            // Allow OAuth without email verification
-            if (account?.provider !== "credentials") return true;
-
             return true;
         },
         async session({ token, user, session }) {
             if (token.user) {
-                session.user.name = token.user.name;
-                session.user.username = token.user.username;
-                session.user.id = token.user.id;
+                const tokenUser: UserType = token.user;
+                session.user.name = tokenUser.name;
+                session.user.username = tokenUser.username;
+                session.user.id = tokenUser.id;
             }
 
             if (token.sub && session.user) {

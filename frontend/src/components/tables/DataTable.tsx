@@ -54,20 +54,14 @@ export function DataTable<TData, TValue>({
     });
 
     return (
-        <div className="rounded-md border bg-card h-full p-1">
+        <div className="rounded-md border bg-card">
             <Table>
-                <TableHeader>
+                <TableHeader className="shadow-sm">
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow
-                            className="bg-primary rounded hover:text-background hover:bg-primary"
-                            key={headerGroup.id}
-                        >
+                        <TableRow className="rounded" key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead
-                                        className="text-white"
-                                        key={header.id}
-                                    >
+                                    <TableHead key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -111,7 +105,7 @@ export function DataTable<TData, TValue>({
                 </TableBody>
             </Table>
 
-            {data.length > 0 && (
+            {data.length > 0 && pageSize < data.length && (
                 <div className="flex items-center justify-between space-x-2 p-2">
                     <Button
                         variant="outline"

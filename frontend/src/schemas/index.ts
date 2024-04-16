@@ -69,3 +69,22 @@ export const RegisterSchema = z.object({
         message: "Name is required",
     }),
 });
+
+export const NewClubSchema = z.object({
+    name: z.string().min(3, {
+        message: "Longer!!",
+    }),
+    userId: z.number(),
+});
+
+export const JoinClubSchema = z.object({
+    uniqueCode: z.string().length(8, {
+        message: "The code should be 8 characters long.",
+    }),
+});
+
+export const FindClubSchema = z.object({
+    uniqueCode: z.string().length(8, {
+        message: "The code should be 8 characters long.",
+    }),
+});
