@@ -23,7 +23,7 @@ export default function SelectClubDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="space-x-2 gap-2 mr-2" variant="outline">
+                <Button className="space-x-2 gap-2" variant="outline">
                     <GalleryVerticalEnd size={16} />{" "}
                     {activeParkrunClub ? activeParkrunClub.name : "Pick a Club"}
                 </Button>

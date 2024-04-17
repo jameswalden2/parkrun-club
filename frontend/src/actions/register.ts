@@ -23,13 +23,23 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         return { error: "Username already in use!" };
     }
 
-    await db.user.create({
-        data: {
-            name,
-            username,
-            password: hashedPassword,
-        },
-    });
+    try {
+        const newUser = await db.user.create({
+            data: {
+                name,
+                username,
+                password: hashedPassword,
+            },
+        });
+
+        await db.userSettings.create({
+            data: {
+                userId: newUser.id,
+            },
+        });
+    } catch (error) {
+        throw error;
+    }
 
     return { success: "Success!" };
 };

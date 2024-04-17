@@ -48,8 +48,6 @@ model User {
   password      String?
   image         String?
   theme         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   accounts      Account[]
   sessions      Session[]
 
@@ -60,7 +58,26 @@ model User {
   parkrunClubsOwned           ParkrunClub[] @relation(name: "ownedBy")
   memberships           ParkrunClubMembership[]
 
+  userSettings  UserSettings?
+
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
   @@map(name: "users")
+}
+
+model UserSettings {
+  id        Int @id @default(autoincrement())
+  userId    Int @map("user_id") @unique
+
+  theme String?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+
+  @@map("user_settings")
 }
 
 model VerificationToken {
@@ -121,11 +138,14 @@ model ParkrunClub {
 
 model ParkrunClubMembership {
   id Int       @id @default(autoincrement())
-  userId Int
-  parkrunClubId Int
+  userId Int  @map("user_id")
+  parkrunClubId Int @map("parkrun_club_id")
 
   user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
   parkrunClub         ParkrunClub     @relation(fields: [parkrunClubId], references: [id], onDelete: NoAction)
+
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
 
   @@map("parkrun_club_memberships")
   @@unique([userId, parkrunClubId], name: "oneMembershipPerUserPerClubUniqueConstraint")

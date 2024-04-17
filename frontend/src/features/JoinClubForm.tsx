@@ -177,7 +177,6 @@ export const JoinClubForm = () => {
                     />
                 </div>
             )}
-            <SelectClubDialog />
         </CardWrapper>
     );
 };

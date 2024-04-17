@@ -1,6 +1,6 @@
 "use client";
 import NavigationBarItem from "./NavigationBarItem";
-import { Home, Wrench, Users } from "lucide-react";
+import { Home, Wrench, Users, Cog } from "lucide-react";
 import BarWrapper from "./BarWrapper";
 
 export default function NavigationBar() {
@@ -20,6 +20,11 @@ export default function NavigationBar() {
                 title="Join a Club"
                 Icon={Users}
                 linkHref="/club/join"
+            />
+            <NavigationBarItem
+                title="User Settings"
+                Icon={Cog}
+                linkHref="/settings"
             />
         </BarWrapper>
     );
