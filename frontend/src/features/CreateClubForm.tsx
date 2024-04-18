@@ -22,6 +22,8 @@ import { createClub } from "@/actions/createClub";
 import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 import { Clipboard, ClipboardCheck } from "lucide-react";
 import { copyTextToClipboard } from "@/lib/utils";
+import { useSetAtom } from "jotai";
+import { activeParkrunClubAtom } from "@/atoms/atoms";
 
 export const CreateClubForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -30,10 +32,8 @@ export const CreateClubForm = () => {
         useState<boolean>(false);
     const [isPending, startTransition] = useTransition();
 
-    // const sampleNewClub = {
-    //     name: "things",
-    //     uniqueCode: "A3SDF3",
-    // }
+    const setActiveParkrunClub = useSetAtom(activeParkrunClubAtom);
+
     const [newClub, setNewClub] = useState<ParkrunClubType | null>(null);
 
     const form = useForm<z.infer<typeof NewClubSchema>>({
@@ -54,6 +54,10 @@ export const CreateClubForm = () => {
                     form.reset();
                     setNewClub(data);
                     setCreateClubSuccess(true);
+                    console.log(
+                        `Setting active parkrun data: ${JSON.stringify(data)}`
+                    );
+                    setActiveParkrunClub(data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -107,9 +111,10 @@ export const CreateClubForm = () => {
                                 <h4>{newClub.uniqueCode}</h4>
                                 <ClipboardConditionalIcon
                                     className="cursor-pointer"
-                                    onClick={() =>
-                                        copyTextToClipboard(newClub.uniqueCode)
-                                    }
+                                    onClick={() => {
+                                        copyTextToClipboard(newClub.uniqueCode);
+                                        setCopyToClipboardSuccess(true);
+                                    }}
                                 />
                             </span>
                         </div>

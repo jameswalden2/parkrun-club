@@ -2,11 +2,6 @@ import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/prisma";
 import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 
-type GetClubByNameInputType = {
-    name: string;
-    userId: number;
-};
-
 export const getClubsForActiveUser = async () => {
     const user = await currentUser();
     if (!user) {
@@ -36,13 +31,18 @@ export const getClubsForActiveUser = async () => {
     }
 };
 
+type GetClubByNameInputType = {
+    name: string;
+    ownerId: number;
+};
+
 export const getClubByName = async ({
     name,
-    userId,
+    ownerId,
 }: GetClubByNameInputType) => {
     try {
         const parkrunClub = await db.parkrunClub.findFirst({
-            where: { name, userId },
+            where: { name, ownerId },
         });
 
         if (parkrunClub) {

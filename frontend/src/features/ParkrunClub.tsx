@@ -15,6 +15,7 @@ export default function ParkrunClub() {
     const setActiveParkrunClub = useSetAtom(activeParkrunClubAtom);
     useEffect(() => {
         getActiveClub().then((data) => {
+            console.log(`Setting active parkrun data: ${JSON.stringify(data)}`);
             setActiveParkrunClub(data);
         });
     }, [setActiveParkrunClub]);

@@ -1,10 +1,18 @@
 "use client";
-import Image from "next/image";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import { Trees } from "lucide-react";
+import clsx from "clsx";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
+
+import { Poppins } from "next/font/google";
+
+import { cn } from "@/lib/utils";
+
+const font = Poppins({
+    subsets: ["latin"],
+    weight: ["600"],
+});
 
 export default function Header() {
     return (
@@ -12,7 +20,9 @@ export default function Header() {
             <Link href="/parkrunclub">
                 <Trees />
             </Link>
-            <span>parkrun Club</span>
+            <p className={cn("text-2xl font-semibold", font.className)}>
+                parkrun Club
+            </p>
             <LogoutButton>Logout</LogoutButton>
         </header>
     );

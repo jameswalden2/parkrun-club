@@ -1,3 +1,7 @@
+import os
+
 from sqlalchemy import create_engine
 
-engine = create_engine("mysql+pymysql://root:password@localhost:3306/auth")
+print(os.environ.get("DB_URL"))
+
+engine = create_engine(os.environ.get("DB_URL"))

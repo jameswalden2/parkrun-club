@@ -22,11 +22,16 @@ import { findClub, FindParkrunClubResultType } from "@/actions/findClub";
 import { joinClub, JoinClubResultType } from "@/actions/joinClub";
 
 import RedirectButton from "@/components/clubs/RedirectButton";
-import SelectClubDialog from "@/components/clubs/SelectClubDialog";
+import { useAtom } from "jotai";
+import { activeParkrunClubAtom } from "@/atoms/atoms";
 
 export const JoinClubForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
+
+    const [activeParkrunClub, setActiveParkrunClub] = useAtom(
+        activeParkrunClubAtom
+    );
 
     const form = useForm<z.infer<typeof FindClubSchema>>({
         resolver: zodResolver(FindClubSchema),
@@ -81,6 +86,12 @@ export const JoinClubForm = () => {
                 .then((data) => {
                     form.reset();
                     setJoinClubSuccess(data);
+                    console.log(
+                        `Setting active parkrun data: ${JSON.stringify(
+                            findClubSuccess.parkrunClub
+                        )}`
+                    );
+                    setActiveParkrunClub(findClubSuccess.parkrunClub);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -140,11 +151,14 @@ export const JoinClubForm = () => {
                         <p>{findClubSuccess.parkrunClub.name}</p>
                         <p>{findClubSuccess.parkrunClub.uniqueCode}</p>
                         <Button
-                            onClick={() =>
+                            onClick={() => {
+                                if (!findClubSuccess.parkrunClub) {
+                                    return;
+                                }
                                 onSubmitJoin(
                                     findClubSuccess.parkrunClub.uniqueCode
-                                )
-                            }
+                                );
+                            }}
                             className="w-full"
                             disabled={isPending}
                         >
@@ -177,6 +191,7 @@ export const JoinClubForm = () => {
                     />
                 </div>
             )}
+            {JSON.stringify(activeParkrunClub)}
         </CardWrapper>
     );
 };

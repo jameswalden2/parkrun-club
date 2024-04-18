@@ -22,9 +22,9 @@ export const createClub = async (
 
     const { name } = validatedFields.data;
 
-    const userId = Number((await currentUser()).id);
+    const ownerId = Number((await currentUser()).id);
 
-    const existingClub = await getClubByName({ name, userId });
+    const existingClub = await getClubByName({ name, ownerId });
 
     if (existingClub) {
         console.log("club already exists");
@@ -38,19 +38,29 @@ export const createClub = async (
             data: {
                 name: name,
                 uniqueCode: uniqueCode,
-                userId: userId,
+                ownerId: ownerId,
             },
             select: {
                 id: true,
                 name: true,
                 uniqueCode: true,
+                ownerId: true,
             },
         });
 
         await db.parkrunClubMembership.create({
             data: {
                 parkrunClubId: newParkrunClub.id,
-                userId: userId,
+                userId: ownerId,
+            },
+        });
+
+        await db.user.update({
+            where: {
+                id: ownerId,
+            },
+            data: {
+                activeParkrunClubId: newParkrunClub.id,
             },
         });
 

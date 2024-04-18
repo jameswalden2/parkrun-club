@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("PRISMA_DB_URL")
 }
 
@@ -52,7 +52,7 @@ model User {
   sessions      Session[]
 
   activeParkrunClubId  Int?
-  activeParkrunClub   ParkrunClub?         @relation(name: "activeParkrunClub", fields: [activeParkrunClubId], references: [id])
+  activeParkrunClub   ParkrunClub?         @relation(name: "activeParkrunClub", fields: [activeParkrunClubId], references: [id], onDelete: SetNull)
 
   completedParkruns      CompletedParkrun[]
   parkrunClubsOwned           ParkrunClub[] @relation(name: "ownedBy")
@@ -108,8 +108,8 @@ model CompletedParkrun {
   userId      Int       @map("user_id")
   noOfCompletions Int @map("no_of_completions") @default(1)
 
-  parkrun      Parkrun     @relation(fields: [parkrunId], references: [id], onDelete: NoAction)
-  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+  parkrun      Parkrun     @relation(fields: [parkrunId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
@@ -122,9 +122,8 @@ model ParkrunClub {
   name          String
   uniqueCode    String  @unique
 
-  userId      Int       @map("user_id")
-
-  owner         User     @relation(name: "ownedBy", fields: [userId], references: [id], onDelete: NoAction)
+  ownerId      Int       @map("user_id")
+  owner         User     @relation(name: "ownedBy", fields: [ownerId], references: [id], onDelete: Cascade)
 
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
@@ -133,7 +132,7 @@ model ParkrunClub {
   usersWithActive User[] @relation(name: "activeParkrunClub")
 
  @@map("parkrun_clubs")
- @@unique([userId, name], name: "clubNamePerUserUniqueConstraint")
+ @@unique([ownerId, name], name: "clubNamePerUserUniqueConstraint")
 }
 
 model ParkrunClubMembership {
@@ -141,8 +140,8 @@ model ParkrunClubMembership {
   userId Int  @map("user_id")
   parkrunClubId Int @map("parkrun_club_id")
 
-  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
-  parkrunClub         ParkrunClub     @relation(fields: [parkrunClubId], references: [id], onDelete: NoAction)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parkrunClub         ParkrunClub     @relation(fields: [parkrunClubId], references: [id], onDelete: Cascade)
 
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")

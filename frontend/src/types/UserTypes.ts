@@ -1,7 +1,7 @@
 export type UserType = {
-    username: string;
-    name: string;
-    id: number;
+    username?: string;
+    name?: string;
+    id?: number;
 };
 
 export type UserSettingsType = {

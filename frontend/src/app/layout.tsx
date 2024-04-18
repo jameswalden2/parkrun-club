@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { auth } from "@baseauth";
 import SessionProvider from "@/components/auth/SessionProvider";
-import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 

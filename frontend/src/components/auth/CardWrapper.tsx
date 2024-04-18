@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Header } from "@/components/auth/Header";
 import { BackButton } from "@/components/auth/BackButton";
+import clsx from "clsx";
 
 interface CardWrapperProps {
     children: React.ReactNode;
@@ -15,6 +16,7 @@ interface CardWrapperProps {
     headerTitle: string;
     backButtonLabel: string;
     backButtonHref: string;
+    className?: string;
 }
 
 export const CardWrapper = ({
@@ -23,9 +25,10 @@ export const CardWrapper = ({
     headerTitle,
     backButtonLabel,
     backButtonHref,
+    className = "w-[400px]",
 }: CardWrapperProps) => {
     return (
-        <Card className="w-[400px] shadow-m mx-auto">
+        <Card className={clsx("shadow-m mx-auto", className)}>
             <CardHeader>
                 <Header title={headerTitle} label={headerLabel} />
             </CardHeader>

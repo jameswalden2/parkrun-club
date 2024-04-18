@@ -10,12 +10,15 @@ import {
 
 import { setActiveClub } from "@/actions/club/active/setActiveClub";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 import { getClubs } from "@/actions/getClubs";
 
 import { useAtom } from "jotai";
 import { activeParkrunClubAtom } from "@/atoms/atoms";
+import InfoBoxWrapper from "../wrappers/InfoBoxWrapper";
+import { Button } from "../ui/button";
+import RedirectButton from "./RedirectButton";
 
 export default function ActiveClubSelect() {
     const [activeParkrunClub, setActiveParkrunClub] = useAtom(
@@ -24,15 +27,18 @@ export default function ActiveClubSelect() {
     const [availableParkrunClubs, setAvailableParkrunClubs] = useState<
         Array<ParkrunClubType>
     >([]);
+    const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
-        getClubs()
-            .then((data) => {
-                setAvailableParkrunClubs(data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        startTransition(() => {
+            getClubs()
+                .then((data) => {
+                    setAvailableParkrunClubs(data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
     }, []);
 
     const changeActiveParkrunClub = async (
@@ -40,6 +46,11 @@ export default function ActiveClubSelect() {
     ) => {
         const setActiveClubResult = await setActiveClub(newActiveParkrunClub);
         if (setActiveClubResult.success) {
+            console.log(
+                `Setting active parkrun data: ${JSON.stringify(
+                    newActiveParkrunClub
+                )}`
+            );
             setActiveParkrunClub(newActiveParkrunClub);
         } else {
             console.log("Unable to set new active parkrun club");
@@ -49,6 +60,7 @@ export default function ActiveClubSelect() {
         <div className="flex items-center space-x-2">
             <Select
                 value={activeParkrunClub?.id.toString()}
+                disabled={isPending}
                 onValueChange={(val) => {
                     const selectedParkrunClubObject =
                         availableParkrunClubs.find(
@@ -78,6 +90,25 @@ export default function ActiveClubSelect() {
                     </SelectGroup>
                 </SelectContent>
             </Select>
+
+            {availableParkrunClubs.length == 0 && !isPending && (
+                <InfoBoxWrapper>
+                    <p>
+                        Looks like you&apos;re not part of any clubs, go and
+                        create a new club or join an existing one!
+                    </p>
+                    <RedirectButton
+                        buttonText="Create a Club"
+                        redirectURL="/club/create"
+                        className="mt-4"
+                    />
+                    <RedirectButton
+                        className="mt-4"
+                        buttonText="Join a Club"
+                        redirectURL="/club/join"
+                    />
+                </InfoBoxWrapper>
+            )}
         </div>
     );
 }

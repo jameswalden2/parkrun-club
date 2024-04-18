@@ -6,7 +6,7 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: po10
+      POSTGRES_DB: parkrunclub
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
     ports:
@@ -21,10 +21,10 @@ services:
     image: adminer
     restart: always
     environment:
-      ADMINER_DEFAULT_SERVER: po10-db
+      ADMINER_DEFAULT_SERVER: parkrunclub-db
       ADMINER_DEFAULT_SYSTEM: PostgreSQL
       ADMINER_DEFAULT_DB_DRIVER: psql
-      ADMINER_DEFAULT_DB_NAME: po10
+      ADMINER_DEFAULT_DB_NAME: parkrunclub
       # ADMINER_DESIGN: pepa-linha-dark
     ports:
       - 8080:8080
@@ -35,13 +35,13 @@ services:
     build:
       context: ../..
       dockerfile: backend/Dockerfile
-    image: po10-backend
+    image: parkrunclub-pipelines
     environment:
       - DB_USER=postgres
       - DB_PASSWORD=example
-      - DB_HOST=po10-db
+      - DB_HOST=parkrunclub-db
       - DB_PORT=5432
-      - DB_NAME=po10
+      - DB_NAME=parkrunclub
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     ports:
@@ -55,15 +55,15 @@ services:
     build:
       context: ../..
       dockerfile: frontend/Dockerfile
-    image: po10-frontend
+    image: parkrunclub-frontend
     working_dir: /app
     environment:
-      - REACT_APP_BACKEND_SERVICE_NAME=po10-backend
+      - REACT_APP_BACKEND_SERVICE_NAME=parkrunclub-backend
       - REACT_APP_BACKEND_PORT=8000
     ports:
       - 3000:3000
     depends_on:
-      - po10-backend
+      - parkrunclub-db
     volumes:
       - ../../frontend/src/:/app/src/
     networks:

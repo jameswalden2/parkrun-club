@@ -14,6 +14,7 @@ export const completedParkruns = async (): Promise<
     const completedParkruns = await db.completedParkrun.findMany({
         where: whereClause,
         select: {
+            id: true,
             parkrunId: true,
             userId: true,
             noOfCompletions: true,

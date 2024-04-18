@@ -13,15 +13,13 @@ import { Copy, Mails } from "lucide-react";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { copyTextToClipboard } from "@/lib/utils";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { activeParkrunClubAtom } from "@/atoms/atoms";
 import RedirectButton from "./RedirectButton";
 import ActiveClubSelect from "./ActiveClubSelect";
 
 export default function InviteDialog() {
-    const [activeParkrunClub, setActiveParkrunClub] = useAtom(
-        activeParkrunClubAtom
-    );
+    const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
     return (
         <Dialog>
             <DialogTrigger asChild>
