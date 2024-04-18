@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { auth } from "@baseauth";
 import SessionProvider from "@/components/auth/SessionProvider";
+import App from "@/features/App";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <SessionProvider session={session}>{children}</SessionProvider>
+                <SessionProvider session={session}>
+                    <App>{children}</App>
+                </SessionProvider>
             </body>
         </html>
     );
