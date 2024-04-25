@@ -27,6 +27,14 @@ export default function ClubSettings() {
 
     const [deleteClubActivated, setDeleteClubActivated] =
         useState<boolean>(false);
+
+    const [newClubName, setNewClubName] = useState<String | null>();
+
+    const handleRenameClub = () => {
+        if (!newClubName || newClubName.length == 0) {
+            return;
+        }
+    };
     return (
         <div>
             <Dialog>
@@ -43,13 +51,17 @@ export default function ClubSettings() {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col items-center">
-                        <SettingsOptionsWrapper className="mb-8">
+                        <SettingsOptionsWrapper className="mb-8 gap-2">
                             <Label>Rename Club</Label>
                             <Input
-                                className="w-1/2"
+                                className="grow"
                                 placeholder="clubname"
-                                value={activeParkrunClub?.name}
+                                value={newClubName}
+                                defaultValue={activeParkrunClub?.name}
                             />
+                            <Button onClick={() => handleRenameClub}>
+                                Rename
+                            </Button>
                         </SettingsOptionsWrapper>
                         <Separator />
                         <SettingsOptionsWrapper className="mt-8">

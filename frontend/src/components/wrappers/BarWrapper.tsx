@@ -11,7 +11,7 @@ export default function BarWrapper({
 }: PropsWithChildren<BarWrapperProps>) {
     return (
         <div className={clsx("w-full bg-gray-50", className)}>
-            <ul className="w-full flex justify-start items-center">
+            <ul className="w-full flex justify-start items-center overflow-x-auto">
                 {children}
             </ul>
         </div>

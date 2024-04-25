@@ -14,17 +14,18 @@ export const leaderboard = async ({
     if (!parkrunClubId) {
         return [];
     }
-    const newLeaderboardData = await db.parkrunClubMembership.findMany({
+    const leaderboardData = await db.parkrunClubMembership.findMany({
         where: {
             parkrunClubId,
         },
         select: {
             user: {
                 select: {
+                    id: true,
                     name: true,
-                    completedParkruns: {
+                    _count: {
                         select: {
-                            parkrunId: true,
+                            completedParkruns: true,
                         },
                     },
                 },
@@ -32,19 +33,13 @@ export const leaderboard = async ({
         },
     });
 
-    let mappedLeaderboardData = newLeaderboardData.map((membership) => {
-        const uniqueParkrunIds = new Set(
-            membership.user.completedParkruns.map((cp) => cp.parkrunId)
-        );
-        return {
-            name: membership.user.name,
-            completedParkruns: uniqueParkrunIds.size,
-        };
+    const mappedLeaderboardData = leaderboardData.map((x) => {
+        return x.user;
     });
 
-    mappedLeaderboardData = mappedLeaderboardData.sort(
-        (a, b) => b.completedParkruns - a.completedParkruns
+    const sortedleaderboardData = mappedLeaderboardData.sort(
+        (a, b) => b._count.completedParkruns - a._count.completedParkruns
     );
 
-    return mappedLeaderboardData;
+    return sortedleaderboardData;
 };

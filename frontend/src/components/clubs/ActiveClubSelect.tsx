@@ -17,7 +17,6 @@ import { getClubs } from "@/actions/getClubs";
 import { useAtom } from "jotai";
 import { activeParkrunClubAtom } from "@/atoms/atoms";
 import InfoBoxWrapper from "../wrappers/InfoBoxWrapper";
-import { Button } from "../ui/button";
 import RedirectButton from "./RedirectButton";
 
 export default function ActiveClubSelect() {
@@ -58,38 +57,40 @@ export default function ActiveClubSelect() {
     };
     return (
         <div className="flex items-center space-x-2">
-            <Select
-                value={activeParkrunClub?.id.toString()}
-                disabled={isPending}
-                onValueChange={(val) => {
-                    const selectedParkrunClubObject =
-                        availableParkrunClubs.find(
-                            (element) => element.id.toString() == val
-                        );
-                    if (selectedParkrunClubObject) {
-                        changeActiveParkrunClub(selectedParkrunClubObject);
-                    }
-                }}
-            >
-                <SelectTrigger className="text-black">
-                    <SelectValue placeholder="Select club" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Your Clubs:</SelectLabel>
-                        {availableParkrunClubs.map((parkrunClub) => {
-                            return (
-                                <SelectItem
-                                    value={String(parkrunClub.id)}
-                                    key={parkrunClub.id}
-                                >
-                                    {parkrunClub.name}
-                                </SelectItem>
+            {availableParkrunClubs && availableParkrunClubs.length > 0 && (
+                <Select
+                    value={activeParkrunClub?.id.toString()}
+                    disabled={isPending}
+                    onValueChange={(val) => {
+                        const selectedParkrunClubObject =
+                            availableParkrunClubs.find(
+                                (element) => element.id.toString() == val
                             );
-                        })}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
+                        if (selectedParkrunClubObject) {
+                            changeActiveParkrunClub(selectedParkrunClubObject);
+                        }
+                    }}
+                >
+                    <SelectTrigger className="text-black">
+                        <SelectValue placeholder="Select club" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Your Clubs:</SelectLabel>
+                            {availableParkrunClubs.map((parkrunClub) => {
+                                return (
+                                    <SelectItem
+                                        value={String(parkrunClub.id)}
+                                        key={parkrunClub.id}
+                                    >
+                                        {parkrunClub.name}
+                                    </SelectItem>
+                                );
+                            })}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            )}
 
             {availableParkrunClubs.length == 0 && !isPending && (
                 <InfoBoxWrapper>

@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,10 +25,19 @@ import {
     UpdateSettingsResultType,
 } from "@/actions/settings/updateSettings";
 import { getSettings } from "@/actions/settings/getSettings";
+import { useAtom } from "jotai";
+import { userSettingsAtom } from "@/atoms/atoms";
 
-export default function UpdateSettingsForm() {
+type UpdateSettingsFormProps = {
+    className?: string;
+};
+
+export default function UpdateSettingsForm({
+    className,
+}: UpdateSettingsFormProps) {
     const [error, setError] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
+    const [userSettings, setUserSettings] = useAtom(userSettingsAtom);
 
     const form = useForm<z.infer<typeof SettingsSchema>>({
         resolver: zodResolver(SettingsSchema),
@@ -40,35 +50,38 @@ export default function UpdateSettingsForm() {
         startTransition(() => {
             getSettings().then((data) => {
                 if (data.success && data.settings) {
+                    setUserSettings(data.settings);
                     form.reset(data.settings);
                 }
             });
         });
-    }, [form]);
+    }, [form, setUserSettings]);
+
+    const sampleUserSettingsDefaultValue = {
+        success: false,
+        settings: null,
+        code: "",
+    };
 
     const [updateSettingsSuccess, setUpdateSettingsSuccess] =
-        useState<UpdateSettingsResultType>({
-            success: false,
-            code: "",
-        });
+        useState<UpdateSettingsResultType>(sampleUserSettingsDefaultValue);
 
     const onSubmitFind = (values: z.infer<typeof SettingsSchema>) => {
         setError("");
-        setUpdateSettingsSuccess({
-            success: false,
-            code: "",
-        });
+        setUpdateSettingsSuccess(sampleUserSettingsDefaultValue);
 
         startTransition(() => {
             updateSettings(values)
                 .then((data) => {
-                    form.reset();
+                    form.reset(data.settings);
                     setUpdateSettingsSuccess(data);
+                    setUserSettings(data.settings);
                 })
                 .catch((error) => {
                     console.log(error);
                     setUpdateSettingsSuccess({
                         success: false,
+                        settings: null,
                         code: "error",
                     });
                     setError("Something went wrong");
@@ -82,6 +95,7 @@ export default function UpdateSettingsForm() {
             headerLabel="Update your profile settings below!"
             backButtonLabel="Go to club dashboard"
             backButtonHref="/parkrunclub"
+            className={clsx(className, "w-full")}
         >
             <Form {...form}>
                 <form

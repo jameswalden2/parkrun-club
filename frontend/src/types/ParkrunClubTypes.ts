@@ -6,9 +6,12 @@ export type ParkrunClubType = {
     uniqueCode: string;
     ownerId?: number;
     owner?: UserType;
+    createdAt?: Date;
+    updatedAt?: Date;
 };
 
 export type ParkrunClubMembershipType = {
+    id: number;
     userId: number;
     parkrunClub: ParkrunClubType;
     createdAt: Date;

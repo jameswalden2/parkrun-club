@@ -8,7 +8,8 @@ import {
     DialogTitle,
     DialogFooter,
 } from "../ui/dialog";
-import { Copy, Mails } from "lucide-react";
+import { Clipboard, ClipboardCheck, Mails } from "lucide-react";
+import { useState } from "react";
 
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -20,6 +21,11 @@ import ActiveClubSelect from "./ActiveClubSelect";
 
 export default function InviteDialog() {
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+    const [copyToClipboardSuccess, setCopyToClipboardSuccess] =
+        useState<boolean>(false);
+    const ClipboardConditionalIcon = copyToClipboardSuccess
+        ? ClipboardCheck
+        : Clipboard;
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -55,7 +61,15 @@ export default function InviteDialog() {
                             className="px-3"
                         >
                             <span className="sr-only">Copy</span>
-                            <Copy className="h-4 w-4" />
+                            <ClipboardConditionalIcon
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    copyTextToClipboard(
+                                        activeParkrunClub.uniqueCode
+                                    );
+                                    setCopyToClipboardSuccess(true);
+                                }}
+                            />
                         </Button>
                     </div>
                 )}

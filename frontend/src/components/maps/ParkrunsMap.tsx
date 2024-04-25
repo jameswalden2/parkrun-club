@@ -6,11 +6,12 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Pin from "@/components/maps/Pin";
 
-import { completedParkrunsAtom } from "@/atoms/atoms";
-import { useAtom } from "jotai";
+import { completedParkrunsAtom, userSettingsAtom } from "@/atoms/atoms";
+import { useAtom, useAtomValue } from "jotai";
 
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { geojsonPointType, geojsonPolygonsType } from "@/types/GeometryTypes";
+import { ParkrunType } from "@/types/ParkrunTypes";
 
 export default function ParkrunsMap() {
     const [parkrunPointsData, setParkrunPointsData] = useState<
@@ -23,6 +24,8 @@ export default function ParkrunsMap() {
     const [completedParkrunList, setCompletedParkrunList] = useAtom(
         completedParkrunsAtom
     );
+
+    const userSettings = useAtomValue(userSettingsAtom);
 
     const user = useCurrentUser();
 
@@ -55,7 +58,7 @@ export default function ParkrunsMap() {
     }, [parkrunPolygonsData, completedParkrunList]);
 
     const handleMarkerClick = useCallback(
-        (parkrun) => {
+        (parkrun: ParkrunType) => {
             // Check if the parkrun is already completed
             const isCompleted = completedParkrunList.some(
                 (item) => item.parkrunId === parkrun.id
@@ -113,7 +116,7 @@ export default function ParkrunsMap() {
     const parkrunPoints = useMemo(
         () =>
             parkrunPointsData.map((parkrun) => (
-                <span key={parkrun.id} className="bg-red-200 z-10">
+                <span key={parkrun.id} className="z-10">
                     <Marker
                         longitude={parkrun.geometry.coordinates[0]}
                         latitude={parkrun.geometry.coordinates[1]}
@@ -130,29 +133,36 @@ export default function ParkrunsMap() {
         [parkrunPointsData, handleMarkerClick]
     );
 
-    const parkrunPolygonsLayer: LayerProps = {
-        id: "parkrun_polygons",
-        type: "fill",
-        paint: {
-            "fill-color": {
-                type: "categorical",
-                property: "completed",
-                stops: [
-                    [true, "green"],
-                    [false, "white"],
-                ],
+    const parkrunPolygonsLayer: LayerProps = useMemo(() => {
+        return {
+            id: "parkrun_polygons",
+            type: "fill",
+            paint: {
+                "fill-color": {
+                    type: "categorical",
+                    property: "completed",
+                    stops: [
+                        [
+                            true,
+                            userSettings && userSettings?.theme
+                                ? userSettings.theme
+                                : "green",
+                        ],
+                        [false, "white"],
+                    ],
+                },
+                "fill-opacity": {
+                    type: "categorical",
+                    property: "completed",
+                    stops: [
+                        [true, 0.8],
+                        [false, 0.1],
+                    ],
+                },
+                "fill-outline-color": "black",
             },
-            "fill-opacity": {
-                type: "categorical",
-                property: "completed",
-                stops: [
-                    [true, 0.6],
-                    [false, 0.1],
-                ],
-            },
-            "fill-outline-color": "black",
-        },
-    };
+        };
+    }, [userSettings]);
 
     return (
         <Map

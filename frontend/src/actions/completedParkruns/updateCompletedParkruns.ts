@@ -8,6 +8,7 @@ import { CompletedParkrunType } from "@/types/CompletedParkrunsTypes";
 
 export type UpdateCompletedParkrunsResultType = {
     success: boolean;
+    code: string;
 };
 
 export const updateCompletedParkruns = async (
@@ -30,7 +31,7 @@ export const updateCompletedParkruns = async (
             });
         });
 
-        return { success: true };
+        return { success: true, code: "success" };
     } catch (error) {
         throw error;
     }

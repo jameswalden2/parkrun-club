@@ -24,6 +24,7 @@ import { Clipboard, ClipboardCheck } from "lucide-react";
 import { copyTextToClipboard } from "@/lib/utils";
 import { useSetAtom } from "jotai";
 import { activeParkrunClubAtom } from "@/atoms/atoms";
+import { setActiveClub } from "@/actions/club/active/setActiveClub";
 
 export const CreateClubForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -50,7 +51,7 @@ export const CreateClubForm = () => {
 
         startTransition(() => {
             createClub(values)
-                .then((data) => {
+                .then(async (data) => {
                     form.reset();
                     setNewClub(data);
                     setCreateClubSuccess(true);
@@ -58,6 +59,7 @@ export const CreateClubForm = () => {
                         `Setting active parkrun data: ${JSON.stringify(data)}`
                     );
                     setActiveParkrunClub(data);
+                    await setActiveClub(data);
                 })
                 .catch((error) => {
                     console.log(error);

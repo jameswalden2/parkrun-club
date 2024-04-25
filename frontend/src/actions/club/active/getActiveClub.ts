@@ -7,10 +7,11 @@ import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 
 export type GetActiveClubResultType = {
     success: boolean;
-    active: string;
+    parkrunClub: ParkrunClubType | null;
+    code: string;
 };
 
-export const getActiveClub = async (): Promise<ParkrunClubType> => {
+export const getActiveClub = async (): Promise<GetActiveClubResultType> => {
     const user = await currentUser();
     if (!user) {
         throw new Error("User not logged in!");
@@ -27,9 +28,17 @@ export const getActiveClub = async (): Promise<ParkrunClubType> => {
             },
         });
 
-        const parkrunClub = user?.activeParkrunClub;
+        if (!user || !user.activeParkrunClub) {
+            return {
+                success: false,
+                parkrunClub: null,
+                code: "no_active_club",
+            };
+        }
 
-        return parkrunClub;
+        const parkrunClub = user.activeParkrunClub;
+
+        return { parkrunClub: parkrunClub, success: true, code: "success" };
     } catch (error) {
         throw error;
     }

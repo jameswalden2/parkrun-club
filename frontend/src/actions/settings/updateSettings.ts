@@ -5,9 +5,11 @@ import * as z from "zod";
 import { db } from "@/lib/prisma";
 import { SettingsSchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
+import { UserSettings } from "@prisma/client";
 
 export type UpdateSettingsResultType = {
     success: boolean;
+    settings: UserSettings | null;
     code: string;
 };
 
@@ -17,18 +19,18 @@ export const updateSettings = async (
     const user = await currentUser();
 
     if (!user || !user.id) {
-        return { success: false, code: "unauthorized" };
+        return { success: false, settings: null, code: "unauthorized" };
     }
 
     try {
-        await db.userSettings.update({
+        const updatedSettings = await db.userSettings.update({
             where: { userId: Number(user.id) },
             data: {
                 ...values,
             },
         });
 
-        return { success: true, code: "success" };
+        return { success: true, settings: updatedSettings, code: "success" };
     } catch (error) {
         throw error;
     }

@@ -1,6 +1,5 @@
 import json
 
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from backend.etl.db import engine

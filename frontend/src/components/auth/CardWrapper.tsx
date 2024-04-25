@@ -14,8 +14,8 @@ interface CardWrapperProps {
     children: React.ReactNode;
     headerLabel: string;
     headerTitle: string;
-    backButtonLabel: string;
-    backButtonHref: string;
+    backButtonLabel?: string;
+    backButtonHref?: string;
     className?: string;
 }
 
@@ -28,14 +28,16 @@ export const CardWrapper = ({
     className = "w-[400px]",
 }: CardWrapperProps) => {
     return (
-        <Card className={clsx("shadow-m mx-auto", className)}>
+        <Card className={clsx("shadow-m", className)}>
             <CardHeader>
                 <Header title={headerTitle} label={headerLabel} />
             </CardHeader>
-            <CardContent className="space-y-4">{children}</CardContent>
-            <CardFooter>
-                <BackButton label={backButtonLabel} href={backButtonHref} />
-            </CardFooter>
+            <CardContent>{children}</CardContent>
+            {backButtonLabel && backButtonHref && (
+                <CardFooter>
+                    <BackButton label={backButtonLabel} href={backButtonHref} />
+                </CardFooter>
+            )}
         </Card>
     );
 };

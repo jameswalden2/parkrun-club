@@ -7,3 +7,12 @@ export type UserType = {
 export type UserSettingsType = {
     theme: string | null;
 };
+
+export type UserProfileType = {
+    id: number;
+    name: string;
+    username: string;
+    memberships: number;
+    completedParkruns: number;
+    createdAt: Date;
+};

@@ -1,5 +1,7 @@
 export type LeaderboardRowType = {
-    avatarURL: string;
+    id: number;
     name: string;
-    completedParkruns: number;
+    _count: {
+        completedParkruns: number;
+    };
 };

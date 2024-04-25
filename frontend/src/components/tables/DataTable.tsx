@@ -9,6 +9,7 @@ import {
     getPaginationRowModel,
     useReactTable,
     PaginationState,
+    Row,
 } from "@tanstack/react-table";
 
 import {
@@ -21,22 +22,25 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import clsx from "clsx";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     pageSize?: number;
+    rowFormatter?: (row: Row<TData>) => string;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
-    pageSize,
+    pageSize = 10,
+    rowFormatter,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: pageSize == undefined ? 5 : pageSize,
+        pageSize: pageSize,
     });
 
     const table = useReactTable({
@@ -81,6 +85,9 @@ export function DataTable<TData, TValue>({
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                className={clsx(
+                                    rowFormatter ? rowFormatter(row) : ""
+                                )}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>

@@ -26,7 +26,8 @@ export default function NavigationBarItem({
                     "focus:bg-accent focus:text-accent-foreground focus:outline-none",
                     "data-[active]:bg-accent/50 data-[state=open]:bg-accent/50",
                     "disabled:pointer-events-none disabled:opacity-50",
-                    "w-full gap-4"
+                    "w-full gap-4",
+                    "whitespace-nowrap"
                 )}
             >
                 {Icon && <Icon size={16} />}

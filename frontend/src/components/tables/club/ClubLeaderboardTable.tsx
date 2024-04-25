@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { DataTable } from "../DataTable";
 
 import { useAtom, useAtomValue } from "jotai";
@@ -11,6 +11,7 @@ import { User } from "lucide-react";
 
 import SortableHeader from "../elements/HeaderCell";
 import { useEffect } from "react";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type PerformancesTableProps = {
     className?: string;
@@ -23,6 +24,7 @@ export default function ClubLeaderboardTable({
 }: PerformancesTableProps) {
     const [leaderboardData, setLeaderboardData] = useAtom(leaderboardDataAtom);
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+    const user = useCurrentUser();
 
     useEffect(() => {
         leaderboard({ parkrunClubId: activeParkrunClub?.id }).then((x) => {
@@ -32,7 +34,7 @@ export default function ClubLeaderboardTable({
 
     let columns: ColumnDef<LeaderboardRowType>[] = [
         {
-            accessorKey: "avatarURL",
+            id: "avatarURL",
             header: "",
             cell: () => {
                 return (
@@ -47,10 +49,14 @@ export default function ClubLeaderboardTable({
             header: "Name",
         },
         {
-            accessorKey: "completedParkruns",
+            accessorKey: "_count.completedParkruns",
             header: "parkruns",
         },
     ];
+
+    const rowFormatter = (row: Row<LeaderboardRowType>): string => {
+        return user && row.original.id == Number(user.id) ? "bg-green-100" : "";
+    };
 
     return (
         <div className={className}>
@@ -58,6 +64,7 @@ export default function ClubLeaderboardTable({
                 columns={columns}
                 data={leaderboardData}
                 pageSize={pageSize}
+                rowFormatter={rowFormatter}
             />
         </div>
     );

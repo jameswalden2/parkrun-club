@@ -3,10 +3,12 @@ import { DataTable } from "@/components/tables/DataTable";
 
 import { ChangeEvent, useEffect, useState } from "react";
 
-import { completedParkruns } from "@/data/completedParkruns";
-
-import { useAtom } from "jotai";
-import { completedParkrunsAtom } from "@/atoms/atoms";
+import { useAtom, useAtomValue } from "jotai";
+import {
+    activeParkrunClubAtom,
+    completedParkrunsAtom,
+    isClubMapSelectedAtom,
+} from "@/atoms/atoms";
 import { CompletedParkrunType } from "@/types/CompletedParkrunsTypes";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -16,32 +18,60 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { updateCompletedParkruns } from "@/actions/completedParkruns/updateCompletedParkruns";
+import {
+    UpdateCompletedParkrunsResultType,
+    updateCompletedParkruns,
+} from "@/actions/completedParkruns/updateCompletedParkruns";
+import InfoBoxWrapper from "../wrappers/InfoBoxWrapper";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { completedParkruns } from "@/data/completedParkruns";
+import { date } from "zod";
 
 type CompletedParkrunTableProps = {
     pageSize?: number;
     editable?: boolean;
+    forceNoClub?: boolean;
+    forceDataLoad?: boolean;
 };
 
 export default function ParkrunCompletedTable({
     pageSize,
     editable = false,
+    forceNoClub = false,
+    forceDataLoad = false,
 }: CompletedParkrunTableProps) {
     const [completedParkrunList, setCompletedParkrunList] = useAtom(
         completedParkrunsAtom
     );
 
+    const user = useCurrentUser();
+
+    const isClubMapSelected = useAtomValue(isClubMapSelectedAtom);
+    const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+
     const [updatedCompletedParkrunMap, setUpdatedCompletedParkrunMap] =
         useState<Map<String, CompletedParkrunType>>(new Map());
 
     const [updateParkrunsResult, setUpdateParkrunsResult] =
-        useState<boolean>(false);
+        useState<UpdateCompletedParkrunsResultType>({
+            success: false,
+            code: "",
+        });
 
     useEffect(() => {
-        completedParkruns().then((x) => {
-            setCompletedParkrunList(x);
-        });
-    }, [setCompletedParkrunList]);
+        if (forceDataLoad) {
+            completedParkruns(isClubMapSelected, activeParkrunClub?.id).then(
+                (data) => {
+                    setCompletedParkrunList(data);
+                }
+            );
+        }
+    }, [
+        isClubMapSelected,
+        activeParkrunClub,
+        forceDataLoad,
+        setCompletedParkrunList,
+    ]);
 
     const handleCompletionsChange = (
         e: ChangeEvent<HTMLInputElement>,
@@ -51,11 +81,13 @@ export default function ParkrunCompletedTable({
             return;
         }
 
+        const newValue = e.target.value ? e.target.value : 1;
+
         const updatedList = [...completedParkrunList];
 
         const newParkrunObject = {
             ...updatedList[row.index],
-            noOfCompletions: Number(e.target.value),
+            noOfCompletions: Number(newValue),
         };
 
         if (updatedList[row.index]) {
@@ -74,6 +106,7 @@ export default function ParkrunCompletedTable({
     const handleSaveChanges = () => {
         updateCompletedParkruns(updatedCompletedParkrunMap).then((data) => {
             if (data.success) {
+                setUpdateParkrunsResult(data);
             }
         });
     };
@@ -116,14 +149,23 @@ export default function ParkrunCompletedTable({
                     {editable && (
                         <Input
                             type="number"
-                            value={row.getValue("noOfCompletions")}
-                            onChange={(e) => handleCompletionsChange(e, row)}
+                            defaultValue={row.getValue("noOfCompletions")}
+                            onChange={(e) => {
+                                e.preventDefault();
+                                handleCompletionsChange(e, row);
+                            }}
                         />
                     )}
                 </span>
             ),
         },
     ];
+
+    const rowFormatter = (row: Row<CompletedParkrunType>): string => {
+        return user && Number(user.id) == row.original.userId
+            ? "bg-green-50"
+            : "";
+    };
 
     return (
         <>
@@ -132,9 +174,24 @@ export default function ParkrunCompletedTable({
                     columns={columns}
                     data={completedParkrunList}
                     pageSize={pageSize}
+                    rowFormatter={
+                        isClubMapSelected && !forceNoClub
+                            ? rowFormatter
+                            : undefined
+                    }
                 />
             </div>
-            {editable && <Button className="w-full">Save</Button>}
+            {editable && (
+                <Button onClick={handleSaveChanges} className="w-full mt-4">
+                    Save
+                </Button>
+            )}
+            {updateParkrunsResult.success &&
+                updateParkrunsResult.code == "success" && (
+                    <InfoBoxWrapper success>
+                        <p>Updated Successfully</p>
+                    </InfoBoxWrapper>
+                )}
         </>
     );
 }

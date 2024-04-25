@@ -6,31 +6,70 @@ import ParkrunDashboard from "@/components/parkrun/ParkrunDashboard";
 import ParkrunCompletedTable from "@/components/tables/ParkrunCompletedTable";
 import ClubLeaderboardTable from "@/components/tables/club/ClubLeaderboardTable";
 import ClubToolBar from "@/components/clubs/ClubToolBar";
+
 import { useEffect } from "react";
-import { useSetAtom } from "jotai";
-import { activeParkrunClubAtom } from "@/atoms/atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {
+    activeParkrunClubAtom,
+    userSettingsAtom,
+    completedParkrunsAtom,
+    isClubMapSelectedAtom,
+} from "@/atoms/atoms";
 import { getActiveClub } from "@/actions/club/active/getActiveClub";
+import { getSettings } from "@/actions/settings/getSettings";
+import { completedParkruns } from "@/data/completedParkruns";
 
 export default function ParkrunClub() {
-    const setActiveParkrunClub = useSetAtom(activeParkrunClubAtom);
+    const [activeParkrunClub, setActiveParkrunClub] = useAtom(
+        activeParkrunClubAtom
+    );
+    const setCompletedParkrunList = useSetAtom(completedParkrunsAtom);
+    const isClubMapSelected = useAtomValue(isClubMapSelectedAtom);
+    const setUserSettings = useSetAtom(userSettingsAtom);
     useEffect(() => {
-        getActiveClub().then((data) => {
-            console.log(`Setting active parkrun data: ${JSON.stringify(data)}`);
-            setActiveParkrunClub(data);
-        });
-    }, [setActiveParkrunClub]);
+        if (!activeParkrunClub) {
+            getActiveClub().then((data) => {
+                console.log(
+                    `Setting active parkrun data: ${JSON.stringify(data)}`
+                );
+                setActiveParkrunClub(data.parkrunClub);
+            });
+            getSettings().then((data) => {
+                setUserSettings(data.settings);
+            });
+        }
+    }, [
+        activeParkrunClub,
+        setUserSettings,
+        setActiveParkrunClub,
+        setCompletedParkrunList,
+    ]);
+
+    useEffect(() => {
+        completedParkruns(isClubMapSelected, activeParkrunClub?.id).then(
+            (x) => {
+                setCompletedParkrunList(x);
+            }
+        );
+    }, [isClubMapSelected, activeParkrunClub, setCompletedParkrunList]);
+
     return (
         <div className="h-full w-full overflow-y-auto">
             <ClubToolBar />
             <ParkrunDashboard />
-            <div className="h-[800px] p-8 gap-8 w-full flex justify-around">
-                <div className="w-1/2 space-y-4 justify-center">
-                    <h4>Your completed parkruns:</h4>
-                    <ParkrunCompletedTable />
-                </div>
-                <div className="w-1/2 space-y-4 justify-center">
+            <div className="p-8 gap-8 w-full flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 space-y-4 justify-center">
                     <h4>Club parkrunners:</h4>
                     <ClubLeaderboardTable />
+                </div>
+                <div className="w-full md:w-1/2 space-y-4 justify-center mb-8">
+                    <h4>
+                        {isClubMapSelected && activeParkrunClub
+                            ? `${activeParkrunClub.name}'s`
+                            : "Your"}{" "}
+                        parkruns:
+                    </h4>
+                    <ParkrunCompletedTable />
                 </div>
             </div>
         </div>

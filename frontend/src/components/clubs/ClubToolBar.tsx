@@ -10,6 +10,7 @@ import { activeParkrunClubAtom } from "@/atoms/atoms";
 export default function ClubToolBar() {
     const user = useCurrentUser();
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+
     return (
         <BarWrapper className="p-2 space-x-2 gap-2">
             <ToolbarItemWrapper>
@@ -20,12 +21,12 @@ export default function ClubToolBar() {
             </ToolbarItemWrapper>
             {activeParkrunClub &&
                 activeParkrunClub.ownerId &&
+                user &&
                 user.id == activeParkrunClub.ownerId.toString() && (
                     <ToolbarItemWrapper>
                         <ClubSettings />
                     </ToolbarItemWrapper>
                 )}
-            {JSON.stringify(activeParkrunClub)}
         </BarWrapper>
     );
 }

@@ -1,15 +1,22 @@
 "use client";
 import NavigationBarItem from "./NavigationBarItem";
-import { Home, Wrench, Users, Cog, ClipboardList } from "lucide-react";
+import { Home, Wrench, Users, Cog, ClipboardList, Award } from "lucide-react";
 import BarWrapper from "../wrappers/BarWrapper";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function NavigationBar() {
+    const user = useCurrentUser();
     return (
         <BarWrapper>
             <NavigationBarItem
                 title="Club Dashboard"
                 Icon={Home}
                 linkHref="/parkrunclub"
+            />
+            <NavigationBarItem
+                title="My Clubs"
+                Icon={Award}
+                linkHref="/club/myclubs"
             />
             <NavigationBarItem
                 title="Create a Club"

@@ -12,8 +12,14 @@ import {
 } from "@/atoms/atoms";
 import { memberships } from "@/data/memberships";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import { CircleDot } from "lucide-react";
+import { leaveClub } from "@/actions/club/leaveClub";
+
+import DateFormatter from "@/components/dates/DateFormatter";
+
+import { setActiveClub } from "@/actions/club/active/setActiveClub";
 
 type PerformancesTableProps = {
     className?: string;
@@ -28,13 +34,13 @@ export default function MembershipsTable({
         parkrunClubMembershipsAtom
     );
 
-    const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+    const [activeParkrunClub, setActiveParkrunClub] = useAtom(
+        activeParkrunClubAtom
+    );
 
-    useEffect(() => {
-        console.log({ activeParkrunClub });
-    }, [activeParkrunClub]);
+    const [isPending, startTransition] = useTransition();
 
-    useEffect(() => {
+    const getMemberships = useCallback(() => {
         memberships()
             .then((data) => {
                 setParkrunClubMemberships(data);
@@ -43,6 +49,33 @@ export default function MembershipsTable({
                 console.log(error);
             });
     }, [setParkrunClubMemberships]);
+
+    useEffect(() => {
+        getMemberships();
+    }, [getMemberships]);
+
+    const handleLeaveClub = (
+        parkrunClubMembership: ParkrunClubMembershipType
+    ) => {
+        startTransition(() => {
+            leaveClub(parkrunClubMembership.id).then(async (result) => {
+                if (!result.success) {
+                    console.log("Oh no!");
+                    return;
+                }
+
+                if (
+                    activeParkrunClub &&
+                    activeParkrunClub.id == parkrunClubMembership.id
+                ) {
+                    setActiveParkrunClub(null);
+                    await setActiveClub(null);
+                }
+
+                getMemberships();
+            });
+        });
+    };
 
     let columns: ColumnDef<ParkrunClubMembershipType>[] = [
         {
@@ -58,24 +91,44 @@ export default function MembershipsTable({
             header: "Club Lead",
         },
         {
-            accessorKey: "parkrunClub.id",
+            accessorKey: "parkrunClub._count.memberships",
             header: "Members",
         },
         {
             accessorKey: "createdAt",
             header: "Member Since",
+            cell: ({ row }) => {
+                return <DateFormatter dateString={row.original.createdAt} />;
+            },
         },
         {
             id: "actions",
             cell: ({ row }) => {
-                return <Button className="bg-destructive">Leave</Button>;
+                return (
+                    <Button
+                        className="bg-destructive"
+                        onClick={() => {
+                            handleLeaveClub(row.original);
+                        }}
+                        disabled={isPending}
+                    >
+                        Leave
+                    </Button>
+                );
             },
         },
         {
             id: "active",
             header: "Active",
             cell: ({ row }) => {
-                return JSON.stringify(activeParkrunClub);
+                return activeParkrunClub &&
+                    activeParkrunClub?.id == row.original.parkrunClub.id ? (
+                    <div className="w-full flex justify-start items-center">
+                        <CircleDot opacity={0.8} className="" color="green" />
+                    </div>
+                ) : (
+                    ""
+                );
             },
         },
     ];
@@ -87,7 +140,6 @@ export default function MembershipsTable({
                 data={parkrunClubMemberships}
                 pageSize={pageSize}
             />
-            {JSON.stringify(activeParkrunClub)}
         </div>
     );
 }

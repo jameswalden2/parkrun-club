@@ -24,6 +24,7 @@ import { joinClub, JoinClubResultType } from "@/actions/joinClub";
 import RedirectButton from "@/components/clubs/RedirectButton";
 import { useAtom } from "jotai";
 import { activeParkrunClubAtom } from "@/atoms/atoms";
+import { setActiveClub } from "@/actions/club/active/setActiveClub";
 
 export const JoinClubForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -83,7 +84,7 @@ export const JoinClubForm = () => {
 
         startTransition(() => {
             joinClub(uniqueCode)
-                .then((data) => {
+                .then(async (data) => {
                     form.reset();
                     setJoinClubSuccess(data);
                     console.log(
@@ -92,6 +93,7 @@ export const JoinClubForm = () => {
                         )}`
                     );
                     setActiveParkrunClub(findClubSuccess.parkrunClub);
+                    await setActiveClub(findClubSuccess.parkrunClub);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -167,6 +169,12 @@ export const JoinClubForm = () => {
                     </div>
                 )}
             {!findClubSuccess.success &&
+                findClubSuccess.code == "no_club_exists" && (
+                    <div className="p-4 bg-orange-400 text-white rounded-md space-y-2">
+                        <h5>We can&apos;t find a club with that code!</h5>
+                    </div>
+                )}
+            {!findClubSuccess.success &&
                 findClubSuccess.code == "membership_exists" &&
                 findClubSuccess.parkrunClub && (
                     <div className="p-4 bg-orange-400 text-white rounded-md space-y-2">
@@ -191,7 +199,6 @@ export const JoinClubForm = () => {
                     />
                 </div>
             )}
-            {JSON.stringify(activeParkrunClub)}
         </CardWrapper>
     );
 };

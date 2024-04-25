@@ -10,7 +10,7 @@ export type SetActiveClubResultType = {
 };
 
 export const setActiveClub = async (
-    newActiveParkrunClub: ParkrunClubType
+    newActiveParkrunClub: ParkrunClubType | null
 ): Promise<SetActiveClubResultType> => {
     const user = await currentUser();
     if (!user) {
@@ -18,7 +18,9 @@ export const setActiveClub = async (
     }
     const id = Number(user.id);
 
-    const activeParkrunClubId = newActiveParkrunClub.id;
+    const activeParkrunClubId = newActiveParkrunClub
+        ? newActiveParkrunClub.id
+        : null;
 
     try {
         await db.user.update({
@@ -26,7 +28,7 @@ export const setActiveClub = async (
                 id,
             },
             data: {
-                activeParkrunClubId,
+                activeParkrunClubId: activeParkrunClubId,
             },
         });
         return { success: true };

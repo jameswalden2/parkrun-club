@@ -9,5 +9,9 @@ export default function ToolbarItemWrapper({
     children,
     className,
 }: PropsWithChildren<ToolBarItemWrapperProps>) {
-    return <div className={clsx("mr-2", className)}>{children}</div>;
+    return (
+        <div className={clsx("mr-2 whitespace-nowrap", className)}>
+            {children}
+        </div>
+    );
 }
