@@ -106,7 +106,7 @@ export const getClubByUniqueCode = async ({
 
 export async function generateUniqueCode(length: number = 8): Promise<string> {
     const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // add more characters if needed
     let uniqueCode = "";
 
     for (let i = 0; i < length; i++) {
@@ -115,17 +115,17 @@ export async function generateUniqueCode(length: number = 8): Promise<string> {
         );
     }
 
-    // Check if the generated code exists in the database
+    // check if the generated code exists in the database
     const codeExists = await db.parkrunClub.findUnique({
         where: {
             uniqueCode,
         },
     });
 
-    // If the code exists, recursively call the function until a unique code is generated
+    // if the code exists, recursively call the function until a unique code is generated
     if (codeExists) {
-        return generateUniqueCode(length); // Recursive call
+        return generateUniqueCode(length);
     } else {
-        return uniqueCode; // Return the unique code
+        return uniqueCode;
     }
 }
