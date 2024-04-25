@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Use postgres/example user/password credentials
   parkrunclub-db:
     image: postgres:latest
     restart: always

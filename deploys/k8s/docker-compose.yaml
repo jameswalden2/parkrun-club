@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  po10-db:
-    image: postgres
+  parkrunclub-db:
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: po10
+      POSTGRES_DB: parkrunclub
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
     ports:
@@ -13,7 +13,7 @@ services:
     volumes:
       - ./artifacts/pgdata:/var/lib/postgresql/data
     networks:
-      - po10-k8s
+      - parkrunclub-k8s
 
   image-registry:
     image: registry:2
@@ -21,7 +21,7 @@ services:
     ports:
       - "5001:5000"
     networks:
-      - po10-k8s
+      - parkrunclub-k8s
 
   build-service:
     build:
@@ -34,23 +34,21 @@ services:
     command:
       - |
         set -e
-        bash deploys/k8s/build_service/build_service.sh "localhost:5001/po10-backend" "backend/Dockerfile"
-        bash deploys/k8s/build_service/build_service.sh "localhost:5001/po10-frontend" "frontend/Dockerfile"
+        bash deploys/k8s/build_service/build_service.sh "localhost:5001/parkrunclub-frontend" "frontend/Dockerfile"
 
         tail -f /dev/null
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ../../backend:/app/backend
       - ../../frontend:/app/frontend
       - ../../deploys:/app/deploys
     depends_on:
       image-registry:
         condition: service_started
     networks:
-      - po10-k8s
+      - parkrunclub-k8s
 
 
 networks:
-  po10:
-    name: po10-k8s
+  parkrunclub-k8s:
+    name: parkrunclub-k8s
     driver: bridge

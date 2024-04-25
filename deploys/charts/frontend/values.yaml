@@ -2,9 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-appLabel: po10.frontend
+appLabel: parkrunclub.frontend
 
-namespace: po10-local
+namespace: parkrunclub-local
 
 replicaCount: 1
 
@@ -13,23 +13,23 @@ repository:
   port: "5001"
 
 image:
-  repository: po10-frontend
+  repository: parkrunclub-frontend
   pullPolicy: Always
   tag: "latest"
 
 env:
-  REACT_APP_BACKEND_SERVICE_NAME: po10-backend-service.po10-local.svc.cluster.local
+  REACT_APP_BACKEND_SERVICE_NAME: parkrunclub-backend-service.parkrunclub-local.svc.cluster.local
   REACT_APP_BACKEND_PORT: 8000 # must match .Values.service.port in backend
 
 service:
-  name: po10-frontend-service
+  name: parkrunclub-frontend-service
   type: ClusterIP
   port: 3000
   targetPort: 3000
 
 ingressRoute:
-  name: po10-frontend-ingress
-  host: local.po10.com
+  name: parkrunclub-frontend-ingress
+  host: local.parkrunclub.com
 
 imagePullSecrets: []
 nameOverride: ""

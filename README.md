@@ -38,9 +38,8 @@ Steps to deploy locally using minikube and helm:
     - Run `minikube dashboard`
     - Run `minikube tunnel` to generate a tunnel to the local cluster. This must remain open in order to access the traefik load balancer.
 1. Add the following to your `/etc/hosts`
-    - 127.0.0.1 api.po10.com
-    - 127.0.0.1 local.po10.com
-1. Access the backend service directly through `api.po10.com` and the frontend service through `local.po10.com`
+    - 127.0.0.1 local.parkrunclub.com
+1. Access the frontend service through `local.parkrunclub.com`
 
 
 # Backend

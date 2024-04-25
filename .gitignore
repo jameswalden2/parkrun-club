@@ -1,6 +1,5 @@
 .DS_Store
 .ipynb_checkpoints/
-po10-dashboard/
 package-lock.json
 
 **/logs/*
