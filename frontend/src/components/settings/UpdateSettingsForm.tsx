@@ -66,7 +66,7 @@ export default function UpdateSettingsForm({
     const [updateSettingsSuccess, setUpdateSettingsSuccess] =
         useState<UpdateSettingsResultType>(sampleUserSettingsDefaultValue);
 
-    const onSubmitFind = (values: z.infer<typeof SettingsSchema>) => {
+    const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
         setError("");
         setUpdateSettingsSuccess(sampleUserSettingsDefaultValue);
 
@@ -99,7 +99,7 @@ export default function UpdateSettingsForm({
         >
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmitFind)}
+                    onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
                 >
                     <div className="space-y-4">
@@ -108,7 +108,7 @@ export default function UpdateSettingsForm({
                             name="theme"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Theme:</FormLabel>
+                                    <FormLabel>Map Polygon Theme:</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}

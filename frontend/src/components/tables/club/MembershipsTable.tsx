@@ -5,6 +5,12 @@ import { DataTable } from "../DataTable";
 
 import { ParkrunClubMembershipType } from "@/types/ParkrunClubTypes";
 
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
 import { useAtom, useAtomValue } from "jotai";
 import {
     activeParkrunClubAtom,
@@ -16,6 +22,7 @@ import { useCallback, useEffect, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { CircleDot } from "lucide-react";
 import { leaveClub } from "@/actions/club/leaveClub";
+import { copyTextToClipboard } from "@/lib/utils";
 
 import DateFormatter from "@/components/dates/DateFormatter";
 
@@ -85,6 +92,31 @@ export default function MembershipsTable({
         {
             accessorKey: "parkrunClub.uniqueCode",
             header: "Club Code",
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        <HoverCard openDelay={0.2} closeDelay={0.2}>
+                            <HoverCardTrigger asChild>
+                                <span
+                                    onClick={() =>
+                                        copyTextToClipboard(
+                                            row.original.parkrunClub.uniqueCode
+                                        )
+                                    }
+                                    className="p-2 rounded-sm shadow-md cursor-pointer"
+                                >
+                                    {row.original.parkrunClub.uniqueCode}
+                                </span>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-auto">
+                                <div>
+                                    <p className="text-sm">Click to copy</p>
+                                </div>
+                            </HoverCardContent>
+                        </HoverCard>
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "parkrunClub.owner.name",

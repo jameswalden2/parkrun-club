@@ -61,8 +61,8 @@ export const LoginForm = () => {
     return (
         <CardWrapper
             headerLabel="Welcome back"
-            headerTitle="🔐 Auth"
-            backButtonLabel="Don't have an account?"
+            headerTitle="🔐 Login"
+            backButtonLabel="Don't have an account? Create one here"
             backButtonHref="/auth/register"
         >
             <Form {...form}>
@@ -103,7 +103,7 @@ export const LoginForm = () => {
                                             type="password"
                                         />
                                     </FormControl>
-                                    <Button
+                                    {/* <Button
                                         size="sm"
                                         variant="link"
                                         asChild
@@ -112,7 +112,7 @@ export const LoginForm = () => {
                                         <Link href="/auth/reset">
                                             Forgot password?
                                         </Link>
-                                    </Button>
+                                    </Button> */}
                                     <FormMessage />
                                 </FormItem>
                             )}

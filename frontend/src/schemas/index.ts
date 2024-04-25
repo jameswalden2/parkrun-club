@@ -35,6 +35,24 @@ export const SettingsSchema = z.object({
 //     }
 // );
 
+export const UpdateUserSettingsSchema = z.object({
+    name: z.optional(
+        z.string().min(1, {
+            message: "Name is required!",
+        })
+    ),
+    newPassword: z.optional(
+        z.string().min(6, {
+            message: "Minimum of 6 characters required",
+        })
+    ),
+    username: z.optional(
+        z.string().min(2, {
+            message: "Username should be >2!",
+        })
+    ),
+});
+
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, {
         message: "Minimum of 6 characters required",
@@ -58,14 +76,14 @@ export const LoginSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
+    name: z.string().min(1, {
+        message: "Name is required!",
+    }),
     username: z.string().min(2, {
-        message: "Longer!!!!",
+        message: "Username should be >2!",
     }),
     password: z.string().min(5, {
         message: "Minimum 6 characters required",
-    }),
-    name: z.string().min(1, {
-        message: "Name is required",
     }),
 });
 

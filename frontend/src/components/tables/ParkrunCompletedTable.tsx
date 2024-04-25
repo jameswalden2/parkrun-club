@@ -1,7 +1,13 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { DataTable } from "@/components/tables/DataTable";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    useCallback,
+    useEffect,
+    useState,
+    useTransition,
+} from "react";
 
 import { useAtom, useAtomValue } from "jotai";
 import {
@@ -49,12 +55,15 @@ export default function ParkrunCompletedTable({
     const isClubMapSelected = useAtomValue(isClubMapSelectedAtom);
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
 
+    const [isPending, startTransition] = useTransition();
+
     const [updatedCompletedParkrunMap, setUpdatedCompletedParkrunMap] =
         useState<Map<String, CompletedParkrunType>>(new Map());
 
     const [updateParkrunsResult, setUpdateParkrunsResult] =
         useState<UpdateCompletedParkrunsResultType>({
             success: false,
+            completedParkruns: [],
             code: "",
         });
 
@@ -73,41 +82,42 @@ export default function ParkrunCompletedTable({
         setCompletedParkrunList,
     ]);
 
-    const handleCompletionsChange = (
-        e: ChangeEvent<HTMLInputElement>,
-        row: Row<CompletedParkrunType>
-    ) => {
-        if (!e.target.value) {
-            return;
-        }
+    const handleCompletionsChange = useCallback(
+        (e: ChangeEvent<HTMLInputElement>, row: Row<CompletedParkrunType>) => {
+            if (!e.target.value) {
+                return;
+            }
 
-        const newValue = e.target.value ? e.target.value : 1;
+            const newValue = e.target.value ? e.target.value : 1;
 
-        const updatedList = [...completedParkrunList];
+            const updatedList = [...completedParkrunList];
 
-        const newParkrunObject = {
-            ...updatedList[row.index],
-            noOfCompletions: Number(newValue),
-        };
+            const newParkrunObject = {
+                ...updatedList[row.index],
+                noOfCompletions: Number(newValue),
+            };
 
-        if (updatedList[row.index]) {
-            updatedList[row.index] = newParkrunObject;
-        }
+            if (updatedList[row.index]) {
+                updatedList[row.index] = newParkrunObject;
+            }
 
-        setCompletedParkrunList(updatedList);
-
-        const newMap = updatedCompletedParkrunMap.set(
-            row.index.toString(),
-            newParkrunObject
-        );
-        setUpdatedCompletedParkrunMap(newMap);
-    };
+            const newMap = updatedCompletedParkrunMap.set(
+                row.index.toString(),
+                newParkrunObject
+            );
+            setUpdatedCompletedParkrunMap(newMap);
+        },
+        [completedParkrunList, updatedCompletedParkrunMap]
+    );
 
     const handleSaveChanges = () => {
-        updateCompletedParkruns(updatedCompletedParkrunMap).then((data) => {
-            if (data.success) {
-                setUpdateParkrunsResult(data);
-            }
+        startTransition(() => {
+            updateCompletedParkruns(updatedCompletedParkrunMap).then((data) => {
+                if (data.success) {
+                    setUpdateParkrunsResult(data);
+                    setCompletedParkrunList(data.completedParkruns);
+                }
+            });
         });
     };
 
@@ -182,13 +192,17 @@ export default function ParkrunCompletedTable({
                 />
             </div>
             {editable && (
-                <Button onClick={handleSaveChanges} className="w-full mt-4">
+                <Button
+                    onClick={handleSaveChanges}
+                    className="w-full mt-4"
+                    disabled={isPending}
+                >
                     Save
                 </Button>
             )}
             {updateParkrunsResult.success &&
                 updateParkrunsResult.code == "success" && (
-                    <InfoBoxWrapper success>
+                    <InfoBoxWrapper success className="mt-4">
                         <p>Updated Successfully</p>
                     </InfoBoxWrapper>
                 )}

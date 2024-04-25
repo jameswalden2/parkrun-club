@@ -7,6 +7,8 @@ import { userProfileAtom } from "@/atoms/atoms";
 import { useAtom } from "jotai";
 import UserProfileInfo from "./UserProfileInfo";
 import UserStats from "./UserStats";
+import { Button } from "../ui/button";
+import UpdateUserSettingsDialog from "./UpdateUserProfileDialog";
 
 export default function UserProfile() {
     const [userProfile, setUserProfile] = useAtom(userProfileAtom);
@@ -20,6 +22,8 @@ export default function UserProfile() {
             setUserProfile(data.profile);
         });
     }, [setUserProfile]);
+
+    const handleUpdateProfile = () => {};
     return (
         <CardWrapper
             headerTitle="Your Profile"
@@ -29,6 +33,7 @@ export default function UserProfile() {
             <div className="w-2/3 flex flex-col mx-auto gap-8">
                 <UserProfileInfo userProfile={userProfile} />
                 <UserStats userProfile={userProfile} />
+                <UpdateUserSettingsDialog />
             </div>
         </CardWrapper>
     );

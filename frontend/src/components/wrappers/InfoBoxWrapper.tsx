@@ -1,23 +1,43 @@
 import clsx from "clsx";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useCallback } from "react";
 
 export type BoxWrapperProps = {
     success?: boolean;
     warning?: boolean;
+    danger?: boolean;
     className?: string;
+    backgroundColour?: string;
 };
 
 export default function InfoBoxWrapper({
     success = false,
     warning = false,
+    danger = false,
+    backgroundColour,
     className,
     children,
 }: PropsWithChildren<BoxWrapperProps>) {
-    const bgColour = success
-        ? "bg-green-400"
-        : warning
-        ? "bg-orange-400"
-        : "bg-card";
+    let bgColour: string = "bg-card";
+
+    const getBgColour = useCallback(
+        (danger: boolean, warning: boolean, success: boolean) => {
+            if (danger) {
+                return "bg-red-600";
+            } else if (warning) {
+                return "bg-orange-400";
+            } else if (success) {
+                return "bg-green-400";
+            }
+            return "bg-card";
+        },
+        []
+    );
+
+    if (backgroundColour) {
+        bgColour = backgroundColour;
+    } else if (success || warning || danger) {
+        bgColour = getBgColour(danger, warning, success);
+    }
 
     const textColour = bgColour == "bg-card" ? "text-black" : "text-white";
     return (

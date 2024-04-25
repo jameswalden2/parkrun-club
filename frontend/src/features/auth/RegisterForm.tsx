@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/forms/FormError";
 import { FormSuccess } from "@/components/forms/FormSuccess";
 import { register } from "@/actions/register";
+import InfoBoxWrapper from "@/components/wrappers/InfoBoxWrapper";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -50,8 +51,8 @@ export const RegisterForm = () => {
     return (
         <CardWrapper
             headerLabel="Create an account"
-            headerTitle="🔐 Auth"
-            backButtonLabel="Already have an account?"
+            headerTitle="🔏 Register"
+            backButtonLabel="Already have an account? Login here"
             backButtonHref="/auth/login"
         >
             <Form {...form}>
@@ -113,6 +114,10 @@ export const RegisterForm = () => {
                                 </FormItem>
                             )}
                         />
+                        <InfoBoxWrapper danger>
+                            This project is in beta. Do NOT use login
+                            credentials you use anywhere else.
+                        </InfoBoxWrapper>
                     </div>
                     <FormError message={error} />
                     <FormSuccess message={success} />

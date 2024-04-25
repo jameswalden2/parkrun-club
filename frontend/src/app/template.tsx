@@ -10,7 +10,7 @@ export default function Template({ children }: PropsWithChildren) {
         <div className="h-screen w-full flex flex-col overflow-hidden">
             <Header />
             {user && <NavigationBar />}
-            <div className="flex overflow-y-auto min-h-full">
+            <div className="flex overflow-y-auto">
                 <main className="flex-1 w-full mx-auto overflow-y-auto">
                     {children}
                 </main>

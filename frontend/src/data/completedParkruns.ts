@@ -10,6 +10,10 @@ export const completedParkruns = async (
 ): Promise<Array<CompletedParkrunType>> => {
     const user = await currentUser();
 
+    if (!user) {
+        throw new Error("unauthenticated.");
+    }
+
     const whereClause =
         parkrunClubId && isClubSelected
             ? {
@@ -47,5 +51,11 @@ export const completedParkruns = async (
         return b.noOfCompletions - a.noOfCompletions;
     });
 
-    return sortedCompletedParkruns;
+    const filteredCompletedParkruns = sortedCompletedParkruns.filter(
+        (value, index, self) =>
+            index ===
+            self.findIndex((t) => t.parkrun.name === value.parkrun.name)
+    );
+
+    return filteredCompletedParkruns;
 };

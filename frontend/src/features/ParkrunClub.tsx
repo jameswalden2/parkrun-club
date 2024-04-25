@@ -54,7 +54,7 @@ export default function ParkrunClub() {
     }, [isClubMapSelected, activeParkrunClub, setCompletedParkrunList]);
 
     return (
-        <div className="h-full w-full overflow-y-auto">
+        <div className="w-full">
             <ClubToolBar />
             <ParkrunDashboard />
             <div className="p-8 gap-8 w-full flex flex-col md:flex-row">

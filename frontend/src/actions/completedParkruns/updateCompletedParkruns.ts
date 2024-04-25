@@ -3,12 +3,13 @@
 import { db } from "@/lib/prisma";
 
 import { currentUser } from "@/lib/auth";
-import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 import { CompletedParkrunType } from "@/types/CompletedParkrunsTypes";
+import { completedParkruns } from "@/data/completedParkruns";
 
 export type UpdateCompletedParkrunsResultType = {
     success: boolean;
     code: string;
+    completedParkruns: Array<CompletedParkrunType>;
 };
 
 export const updateCompletedParkruns = async (
@@ -31,7 +32,13 @@ export const updateCompletedParkruns = async (
             });
         });
 
-        return { success: true, code: "success" };
+        const newCompletedParkruns = await completedParkruns(false);
+
+        return {
+            success: true,
+            completedParkruns: newCompletedParkruns,
+            code: "success",
+        };
     } catch (error) {
         throw error;
     }
