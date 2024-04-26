@@ -5,11 +5,11 @@ import * as z from "zod";
 import { db } from "@/lib/prisma";
 import { SettingsSchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
-import { UserSettings } from "@prisma/client";
+import { UserSettingsType } from "@/types/UserTypes";
 
 export type UpdateSettingsResultType = {
     success: boolean;
-    settings: UserSettings | null;
+    settings: UserSettingsType | null;
     code: string;
 };
 
