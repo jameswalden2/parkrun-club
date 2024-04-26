@@ -14,7 +14,7 @@ export const memberships = async (): Promise<
     }
 
     const memberships = await db.parkrunClubMembership.findMany({
-        where: { userId: Number(user.id) },
+        where: { userId: user.id },
         select: {
             id: true,
             userId: true,

@@ -1,3 +1,5 @@
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+
 export type geojsonPointType = {
     type: string;
     properties: {
@@ -17,11 +19,11 @@ export type geojsonPointType = {
 export type polygonParkrunFeatureType = {
     type: string;
     properties: {
+        id: number;
         name: string;
-        description: string;
-        styleUrl: string;
-        Location: string;
-        Permit: string;
+        location: string;
+        logitude: number;
+        latitude: number;
     };
     geometry: {
         geometries: Array<Object>;
@@ -30,6 +32,6 @@ export type polygonParkrunFeatureType = {
 };
 
 export type geojsonPolygonsType = {
-    type?: string;
-    features?: Array<polygonParkrunFeatureType>;
+    type: "FeatureCollection";
+    features: Array<Feature<Geometry, GeoJsonProperties>>;
 };

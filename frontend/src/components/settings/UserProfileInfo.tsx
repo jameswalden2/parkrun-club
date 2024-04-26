@@ -16,10 +16,12 @@ export default function UserProfileInfo({ userProfile }: UserProfileInfoProps) {
                         label="Username"
                         info={userProfile.username}
                     />
-                    <UserProfileItem
-                        label="Member since"
-                        info={userProfile.createdAt.toDateString()}
-                    />
+                    {userProfile.createdAt && (
+                        <UserProfileItem
+                            label="Member since"
+                            info={userProfile.createdAt.toDateString()}
+                        />
+                    )}
                 </>
             )}
             {!userProfile && <p>No data available</p>}

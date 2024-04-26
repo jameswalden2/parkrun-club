@@ -1,28 +1,8 @@
 -- CreateTable
-CREATE TABLE "accounts" (
-    "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
-    "type" TEXT NOT NULL,
-    "provider" TEXT NOT NULL,
-    "provider_account_id" TEXT NOT NULL,
-    "refresh_token" TEXT,
-    "access_token" TEXT,
-    "expires_at" INTEGER,
-    "token_type" TEXT,
-    "scope" TEXT,
-    "id_token" TEXT,
-    "session_state" TEXT,
-    "oauth_token_secret" TEXT,
-    "oauth_token" TEXT,
-
-    CONSTRAINT "accounts_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "sessions" (
     "id" SERIAL NOT NULL,
     "session_token" TEXT NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
@@ -30,7 +10,7 @@ CREATE TABLE "sessions" (
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT,
     "username" TEXT,
     "email" TEXT,
@@ -48,7 +28,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "user_settings" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "theme" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -79,7 +59,7 @@ CREATE TABLE "parkruns" (
 CREATE TABLE "completed_parkruns" (
     "id" SERIAL NOT NULL,
     "parkrun_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "no_of_completions" INTEGER NOT NULL DEFAULT 1,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -92,7 +72,7 @@ CREATE TABLE "parkrun_clubs" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "uniqueCode" TEXT NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -102,16 +82,13 @@ CREATE TABLE "parkrun_clubs" (
 -- CreateTable
 CREATE TABLE "parkrun_club_memberships" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "parkrun_club_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "parkrun_club_memberships_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "sessions_session_token_key" ON "sessions"("session_token");
@@ -139,9 +116,6 @@ CREATE UNIQUE INDEX "parkrun_clubs_user_id_name_key" ON "parkrun_clubs"("user_id
 
 -- CreateIndex
 CREATE UNIQUE INDEX "parkrun_club_memberships_user_id_parkrun_club_id_key" ON "parkrun_club_memberships"("user_id", "parkrun_club_id");
-
--- AddForeignKey
-ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

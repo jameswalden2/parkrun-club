@@ -28,7 +28,7 @@ export default function ClubSettings() {
     const [deleteClubActivated, setDeleteClubActivated] =
         useState<boolean>(false);
 
-    const [newClubName, setNewClubName] = useState<String | null>();
+    const [newClubName, setNewClubName] = useState<string>("");
 
     const handleRenameClub = () => {
         if (!newClubName || newClubName.length == 0) {

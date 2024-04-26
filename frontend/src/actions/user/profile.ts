@@ -1,5 +1,7 @@
 "use server";
 
+import * as z from "zod";
+
 import { db } from "@/lib/prisma";
 import { currentUser } from "@/lib/auth";
 import { UserProfileType } from "@/types/UserTypes";
@@ -19,7 +21,7 @@ export const getUserProfile = async (): Promise<UserProfileResultType> => {
     }
 
     let userProfile = await db.user.findUnique({
-        where: { id: Number(user.id) },
+        where: { id: user.id },
         select: {
             id: true,
             name: true,
@@ -65,7 +67,7 @@ export const getUserInformation = async () => {
     }
 
     let userInfo = await db.user.findUnique({
-        where: { id: Number(user.id) },
+        where: { id: user.id },
         select: {
             id: true,
             name: true,
@@ -94,7 +96,7 @@ export const updateUserProfile = async (
 
     const updatedUser = await db.user.update({
         where: {
-            id: Number(user.id),
+            id: user.id,
         },
         data: {
             name: name,

@@ -13,14 +13,21 @@ export type JoinClubResultType = {
 export const joinClub = async (
     uniqueCode: string
 ): Promise<JoinClubResultType> => {
-    const userId = Number((await currentUser()).id);
+    const user = await currentUser();
+    if (!user) {
+        throw new Error("Not authorised.");
+    }
+
+    const userId = user.id;
+    if (!userId) {
+        throw new Error("No userId available.");
+    }
 
     const parkrunClub = await getClubByUniqueCode({
         uniqueCode,
     });
 
     if (!parkrunClub) {
-        console.log("No club exists already exists!");
         return {
             success: true,
             code: "no_club_found",

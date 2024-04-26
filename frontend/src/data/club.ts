@@ -9,12 +9,11 @@ export const getClubsForActiveUser = async () => {
     if (!user) {
         return [];
     }
-    const userId = Number(user.id);
 
     try {
         const parkrunClubs = await db.parkrunClubMembership.findMany({
             where: {
-                userId,
+                userId: user.id,
             },
             select: {
                 parkrunClub: true,
@@ -35,7 +34,7 @@ export const myClubs = async (): Promise<Array<ParkrunClubType>> => {
     }
 
     const myClubs = await db.parkrunClub.findMany({
-        where: { ownerId: Number(user.id) },
+        where: { ownerId: user.id },
         select: {
             id: true,
             name: true,
@@ -55,26 +54,26 @@ export const myClubs = async (): Promise<Array<ParkrunClubType>> => {
 
 type GetClubByNameInputType = {
     name: string;
-    ownerId: number;
+    ownerId: string | undefined;
 };
 
 export const getClubByName = async ({
     name,
     ownerId,
-}: GetClubByNameInputType) => {
+}: GetClubByNameInputType): Promise<ParkrunClubType | null> => {
     try {
+        if (!ownerId) {
+            return null;
+        }
         const parkrunClub = await db.parkrunClub.findFirst({
             where: { name, ownerId },
         });
 
-        if (parkrunClub) {
-            console.log("ParkrunClub found:", parkrunClub);
-            return parkrunClub;
+        if (!parkrunClub) {
+            return null;
         }
-        console.log("No ParkrunClub found matching the criteria.");
-        return null;
+        return parkrunClub;
     } catch (error) {
-        console.log({ error });
         return null;
     }
 };
@@ -86,20 +85,17 @@ type GetClubByUniqueCodeInputType = {
 
 export const getClubByUniqueCode = async ({
     uniqueCode,
-}: GetClubByUniqueCodeInputType): Promise<ParkrunClubType> => {
+}: GetClubByUniqueCodeInputType): Promise<ParkrunClubType | null> => {
     try {
         const parkrunClub = await db.parkrunClub.findUnique({
             where: { uniqueCode },
         });
 
         if (!parkrunClub) {
-            console.log("No ParkrunClub found matching the criteria.");
             return null;
         }
-        console.log("ParkrunClub found:", parkrunClub);
         return parkrunClub;
     } catch (error) {
-        console.log({ error });
         return null;
     }
 };

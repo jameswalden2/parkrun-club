@@ -18,10 +18,13 @@ export type FindParkrunClubResultType = {
 export const findClub = async (
     values: z.infer<typeof FindClubSchema>
 ): Promise<FindParkrunClubResultType> => {
+    const user = await currentUser();
+    if (!user) {
+        throw new Error("Not authorised.");
+    }
     const validatedFields = FindClubSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        console.log("invalid fields");
         throw Error("Invalid fields!");
     }
 
@@ -31,7 +34,6 @@ export const findClub = async (
         const parkrunClub = await getClubByUniqueCode({ uniqueCode });
 
         if (!parkrunClub) {
-            console.log("No club exists already exists!");
             return {
                 success: false,
                 parkrunClub: null,
@@ -39,12 +41,10 @@ export const findClub = async (
             };
         }
 
-        const userId = Number((await currentUser()).id);
-
         const existingMembership = await db.parkrunClubMembership.findFirst({
             where: {
                 parkrunClubId: parkrunClub.id,
-                userId: userId,
+                userId: user.id,
             },
         });
 

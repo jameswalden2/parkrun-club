@@ -25,7 +25,7 @@ export const completedParkruns = async (
                       },
                   },
               }
-            : { userId: Number(user.id) };
+            : { userId: user.id };
 
     const completedParkruns = await db.completedParkrun.findMany({
         where: whereClause,
@@ -36,6 +36,7 @@ export const completedParkruns = async (
             noOfCompletions: true,
             parkrun: {
                 select: {
+                    id: true,
                     name: true,
                 },
             },

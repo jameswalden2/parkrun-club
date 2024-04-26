@@ -24,7 +24,7 @@ export const updateSettings = async (
 
     try {
         const updatedSettings = await db.userSettings.update({
-            where: { userId: Number(user.id) },
+            where: { userId: user.id },
             data: {
                 ...values,
             },

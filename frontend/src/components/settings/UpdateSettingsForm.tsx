@@ -50,6 +50,9 @@ export default function UpdateSettingsForm({
         startTransition(() => {
             getSettings().then((data) => {
                 if (data.success && data.settings) {
+                    if (data.settings.theme == null) {
+                        return;
+                    }
                     setUserSettings(data.settings);
                     form.reset(data.settings);
                 }
@@ -73,18 +76,20 @@ export default function UpdateSettingsForm({
         startTransition(() => {
             updateSettings(values)
                 .then((data) => {
-                    form.reset(data.settings);
+                    if (!data.settings) {
+                        return;
+                    }
                     setUpdateSettingsSuccess(data);
                     setUserSettings(data.settings);
+                    form.reset(data.settings);
                 })
                 .catch((error) => {
-                    console.log(error);
                     setUpdateSettingsSuccess({
                         success: false,
                         settings: null,
                         code: "error",
                     });
-                    setError("Something went wrong");
+                    setError(`Something went wrong: ${error.message}`);
                 });
         });
     };
@@ -110,12 +115,14 @@ export default function UpdateSettingsForm({
                                 <FormItem>
                                     <FormLabel>Map Polygon Theme:</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            {...field}
-                                            disabled={isPending}
-                                            placeholder="pink, #f4e3a6"
-                                            type="text"
-                                        />
+                                        {field.value !== null && (
+                                            <Input
+                                                {...field}
+                                                disabled={isPending}
+                                                placeholder="pink, #f4e3a6"
+                                                type="text"
+                                            />
+                                        )}
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

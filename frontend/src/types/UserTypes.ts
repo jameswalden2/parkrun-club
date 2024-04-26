@@ -1,18 +1,18 @@
 export type UserType = {
     username?: string;
     name?: string;
-    id?: number;
+    id?: string;
 };
 
 export type UserSettingsType = {
-    theme: string | null;
+    theme?: string;
 };
 
 export type UserProfileType = {
-    id: number;
+    id: string;
     name: string;
     username: string;
-    memberships: number;
-    completedParkruns: number;
-    createdAt: Date;
+    memberships?: number;
+    completedParkruns?: number;
+    createdAt?: Date;
 };

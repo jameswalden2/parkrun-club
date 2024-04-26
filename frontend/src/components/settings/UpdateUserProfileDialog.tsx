@@ -69,6 +69,9 @@ export default function UpdateUserSettingsDialog() {
     const handleSubmit = (values: z.infer<typeof UpdateUserSettingsSchema>) => {
         startTransition(() => {
             updateUserProfile(values).then((data) => {
+                if (!data || !data.newProfile) {
+                    return;
+                }
                 form.reset(data.newProfile);
                 setUpdateResult(data);
             });
@@ -130,7 +133,7 @@ export default function UpdateUserSettingsDialog() {
                             />
                             <FormField
                                 control={form.control}
-                                name="password"
+                                name="newPassword"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>

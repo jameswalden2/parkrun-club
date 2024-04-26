@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Adapter } from "next-auth/adapters";
 
 import { db } from "@/lib/prisma";
 import authConfig from "./auth.config";
@@ -18,6 +19,7 @@ export const {
         signIn: "/auth/login",
         error: "/auth/error",
     },
+    adapter: PrismaAdapter(db) as Adapter,
     callbacks: {
         async signIn({ user, account }) {
             return true;
@@ -26,8 +28,13 @@ export const {
             if (token.user) {
                 const tokenUser: UserType = token.user;
                 session.user.name = tokenUser.name;
-                session.user.username = tokenUser.username;
-                session.user.id = tokenUser.id;
+                if (tokenUser.id) {
+                    session.user.id = tokenUser.id;
+                }
+
+                if (tokenUser.username) {
+                    session.user.username = tokenUser.username;
+                }
             }
 
             if (token.sub && session.user) {
@@ -48,7 +55,6 @@ export const {
             return token;
         },
     },
-    adapter: PrismaAdapter(db),
     session: { strategy: "jwt" },
     ...authConfig,
 });

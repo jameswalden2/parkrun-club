@@ -16,19 +16,18 @@ export const getActiveClub = async (): Promise<GetActiveClubResultType> => {
     if (!user) {
         throw new Error("User not logged in!");
     }
-    const id = Number(user.id);
 
     try {
-        const user = await db.user.findUnique({
+        const usersActiveClub = await db.user.findUnique({
             where: {
-                id,
+                id: user.id,
             },
             select: {
                 activeParkrunClub: true,
             },
         });
 
-        if (!user || !user.activeParkrunClub) {
+        if (!usersActiveClub || !usersActiveClub.activeParkrunClub) {
             return {
                 success: false,
                 parkrunClub: null,
@@ -36,7 +35,7 @@ export const getActiveClub = async (): Promise<GetActiveClubResultType> => {
             };
         }
 
-        const parkrunClub = user.activeParkrunClub;
+        const parkrunClub = usersActiveClub.activeParkrunClub;
 
         return { parkrunClub: parkrunClub, success: true, code: "success" };
     } catch (error) {

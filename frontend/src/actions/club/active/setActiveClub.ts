@@ -16,7 +16,6 @@ export const setActiveClub = async (
     if (!user) {
         throw new Error("User not logged in!");
     }
-    const id = Number(user.id);
 
     const activeParkrunClubId = newActiveParkrunClub
         ? newActiveParkrunClub.id
@@ -25,7 +24,7 @@ export const setActiveClub = async (
     try {
         await db.user.update({
             where: {
-                id,
+                id: user.id,
             },
             data: {
                 activeParkrunClubId: activeParkrunClubId,

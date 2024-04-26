@@ -19,7 +19,10 @@ export default function ParkrunsMap() {
     >([]);
 
     const [parkrunPolygonsData, setParkrunPolygonsData] =
-        useState<geojsonPolygonsType>({});
+        useState<geojsonPolygonsType>({
+            type: "FeatureCollection",
+            features: [],
+        });
 
     const [completedParkrunList, setCompletedParkrunList] = useAtom(
         completedParkrunsAtom
@@ -49,6 +52,7 @@ export default function ParkrunsMap() {
             properties: {
                 ...feature.properties,
                 completed: completedParkrunList.some((item) => {
+                    if (!feature.properties) return false;
                     return item.parkrunId === feature.properties.id;
                 }),
             },
@@ -60,6 +64,9 @@ export default function ParkrunsMap() {
     const handleMarkerClick = useCallback(
         (parkrun: ParkrunType) => {
             // Check if the parkrun is already completed
+            if (!user) {
+                return;
+            }
             const isCompleted = completedParkrunList.some(
                 (item) => item.parkrunId === parkrun.id
             );
@@ -85,9 +92,9 @@ export default function ParkrunsMap() {
                             )
                         );
                     })
-                    .catch((error) =>
-                        console.error("Error removing parkrun:", error)
-                    );
+                    .catch((error) => {
+                        throw new Error("Error deleting parkrun:", error);
+                    });
             } else {
                 // If the parkrun is not completed, send a POST request to add it
                 fetch("/api/parkrun/completed-parkrun", {
@@ -105,9 +112,9 @@ export default function ParkrunsMap() {
                             newParkrun,
                         ]);
                     })
-                    .catch((error) =>
-                        console.error("Error adding parkrun:", error)
-                    );
+                    .catch((error) => {
+                        throw new Error("Error adding parkrun:", error);
+                    });
             }
         },
         [completedParkrunList, user, setCompletedParkrunList]

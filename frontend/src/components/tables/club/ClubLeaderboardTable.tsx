@@ -55,7 +55,7 @@ export default function ClubLeaderboardTable({
     ];
 
     const rowFormatter = (row: Row<LeaderboardRowType>): string => {
-        return user && row.original.id == Number(user.id) ? "bg-green-100" : "";
+        return user && row.original.id == user.id ? "bg-green-100" : "";
     };
 
     return (

@@ -22,11 +22,15 @@ export const getSettings = async (): Promise<GetSettingsResultType> => {
 
     try {
         const userSettings = await db.userSettings.findUnique({
-            where: { userId: Number(user.id) },
+            where: { userId: user.id },
             select: {
                 theme: true,
             },
         });
+
+        if (!userSettings || !userSettings.theme) {
+            return { success: false, settings: null, code: "no_settings" };
+        }
 
         return { success: true, settings: userSettings, code: "success" };
     } catch (error) {

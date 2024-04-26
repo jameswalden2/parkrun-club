@@ -22,12 +22,21 @@ export const createClub = async (
 
     const { name } = validatedFields.data;
 
-    const ownerId = Number((await currentUser()).id);
+    const user = await currentUser();
+
+    if (!user) {
+        throw new Error("Not authorised.");
+    }
+
+    const ownerId = user.id;
+
+    if (!ownerId) {
+        throw new Error("No ownerId available.");
+    }
 
     const existingClub = await getClubByName({ name, ownerId });
 
     if (existingClub) {
-        console.log("club already exists");
         throw Error("Club already exists!");
     }
 

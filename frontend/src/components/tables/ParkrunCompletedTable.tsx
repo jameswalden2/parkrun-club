@@ -172,9 +172,7 @@ export default function ParkrunCompletedTable({
     ];
 
     const rowFormatter = (row: Row<CompletedParkrunType>): string => {
-        return user && Number(user.id) == row.original.userId
-            ? "bg-green-50"
-            : "";
+        return user && user.id == row.original.userId ? "bg-green-50" : "";
     };
 
     return (
