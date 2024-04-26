@@ -7,11 +7,18 @@ import { db } from "@/lib/prisma";
 import { RegisterSchema } from "@/schemas";
 import { getUserByUsername } from "@/data/user";
 
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
+export type RegisterResult = {
+    success: boolean;
+    code: string;
+};
+
+export const register = async (
+    values: z.infer<typeof RegisterSchema>
+): Promise<RegisterResult> => {
     const validatedFields = RegisterSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        return { error: "Invalid fields!" };
+        return { success: false, code: "invalid_fields" };
     }
 
     const { username, password, name } = validatedFields.data;
@@ -20,7 +27,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const existingUser = await getUserByUsername(username);
 
     if (existingUser) {
-        return { error: "Username already in use!" };
+        return { success: false, code: "username_taken" };
     }
 
     try {
@@ -41,5 +48,5 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         throw error;
     }
 
-    return { success: "Success!" };
+    return { success: true, code: "success" };
 };

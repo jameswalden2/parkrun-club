@@ -3,9 +3,8 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 
 import { LoginSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
@@ -22,14 +21,16 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/forms/FormError";
 import { FormSuccess } from "@/components/forms/FormSuccess";
 import { login } from "@/actions/login";
+import InfoBoxWrapper from "@/components/wrappers/InfoBoxWrapper";
 
 export const LoginForm = () => {
     const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get("callbackUrl");
 
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
+
+    const registerSuccess = searchParams.get("registerSuccess");
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -71,6 +72,11 @@ export const LoginForm = () => {
                     className="space-y-6"
                 >
                     <div className="space-y-4">
+                        {registerSuccess == "true" && (
+                            <InfoBoxWrapper success>
+                                You successfully registered! Log in below!
+                            </InfoBoxWrapper>
+                        )}
                         <FormField
                             control={form.control}
                             name="username"

@@ -19,13 +19,17 @@ import { CardWrapper } from "@/components/auth/CardWrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/forms/FormError";
 import { FormSuccess } from "@/components/forms/FormSuccess";
-import { register } from "@/actions/register";
+import { RegisterResult, register } from "@/actions/register";
 import InfoBoxWrapper from "@/components/wrappers/InfoBoxWrapper";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
-    const [error, setError] = useState<string | undefined>("");
-    const [success, setSuccess] = useState<string | undefined>("");
+    const [registerResult, setRegisterResult] = useState<RegisterResult>({
+        success: false,
+        code: "",
+    });
     const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
@@ -37,14 +41,18 @@ export const RegisterForm = () => {
     });
 
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-        setError("");
-        setSuccess("");
-
         startTransition(() => {
-            register(values).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
-            });
+            register(values)
+                .then((data) => {
+                    setRegisterResult(data);
+                    router.push("/auth/login?registerSuccess=true");
+                })
+                .catch((error) => {
+                    setRegisterResult({
+                        success: false,
+                        code: "unknown_error",
+                    });
+                });
         });
     };
 
@@ -119,8 +127,14 @@ export const RegisterForm = () => {
                             credentials you use anywhere else.
                         </InfoBoxWrapper>
                     </div>
-                    <FormError message={error} />
-                    <FormSuccess message={success} />
+                    {registerResult.success && (
+                        <FormSuccess message={registerResult.code} />
+                    )}
+                    {!registerResult.success &&
+                        registerResult.code.length > 0 && (
+                            <FormError message={registerResult.code} />
+                        )}
+
                     <Button
                         disabled={isPending}
                         type="submit"
