@@ -4,7 +4,13 @@ import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/prisma";
 import { ParkrunClubType } from "@/types/ParkrunClubTypes";
 
-export const getClubsForActiveUser = async () => {
+export type ClubsForActiveUserType = {
+    parkrunClub: ParkrunClubType;
+};
+
+export const getClubsForActiveUser = async (): Promise<
+    Array<ClubsForActiveUserType>
+> => {
     const user = await currentUser();
     if (!user) {
         return [];
