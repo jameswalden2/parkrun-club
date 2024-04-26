@@ -8,12 +8,18 @@ import { LoginSchema } from "@/schemas";
 import { getUserByUsername } from "@/data/user";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
+export type LoginResult = {
+    success: boolean;
+    code: string;
+};
+
+export const login = async (
+    values: z.infer<typeof LoginSchema>
+): Promise<LoginResult> => {
     const validatedFields = LoginSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        console.log("invalid fields");
-        return { error: "Invalid fields!" };
+        return { success: false, code: "invalid_fields" };
     }
 
     const { username, password } = validatedFields.data;
@@ -21,8 +27,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     const existingUser = await getUserByUsername(username);
 
     if (!existingUser || !existingUser.username || !existingUser.password) {
-        console.log("username doesn't exist");
-        return { error: "Username does not exist!" };
+        return { success: false, code: "username_error" };
     }
 
     try {
@@ -31,13 +36,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             password,
             redirectTo: DEFAULT_LOGIN_REDIRECT,
         });
+        return { success: true, code: "success" };
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return { error: "Invalid credentials!" };
+                    return { success: false, code: "credentials_error" };
                 default:
-                    return { error: "Something went wrong!" };
+                    return { success: false, code: "unknown_error" };
             }
         }
 

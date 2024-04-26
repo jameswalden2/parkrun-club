@@ -5,7 +5,7 @@ FROM node:${NODE_VERSION} as builder
 
 WORKDIR /build
 
-COPY frontend/package.json ./
+RUN git clone
 
 RUN npm install
 

@@ -20,14 +20,16 @@ import { CardWrapper } from "@/components/auth/CardWrapper";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/forms/FormError";
 import { FormSuccess } from "@/components/forms/FormSuccess";
-import { login } from "@/actions/login";
+import { LoginResult, login } from "@/actions/login";
 import InfoBoxWrapper from "@/components/wrappers/InfoBoxWrapper";
 
 export const LoginForm = () => {
     const searchParams = useSearchParams();
 
-    const [error, setError] = useState<string | undefined>("");
-    const [success, setSuccess] = useState<string | undefined>("");
+    const [loginResult, setLoginResult] = useState<LoginResult>({
+        success: false,
+        code: "",
+    });
     const [isPending, startTransition] = useTransition();
 
     const registerSuccess = searchParams.get("registerSuccess");
@@ -41,21 +43,18 @@ export const LoginForm = () => {
     });
 
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-        setError("");
-        setSuccess("");
-
         startTransition(() => {
             login(values)
                 .then((data) => {
-                    if (data?.error) {
-                        form.reset();
-                        setError(data.error);
-                    }
-
                     form.reset();
-                    setSuccess("true");
+                    setLoginResult(data);
                 })
-                .catch(() => setError("Something went wrong"));
+                .catch((error) => {
+                    setLoginResult({
+                        success: false,
+                        code: error,
+                    });
+                });
         });
     };
 
@@ -124,8 +123,15 @@ export const LoginForm = () => {
                             )}
                         />
                     </div>
-                    <FormError message={error} />
-                    <FormSuccess message={success} />
+                    {!loginResult.success && (
+                        <FormError message={loginResult.code} />
+                    )}
+                    {loginResult.success && (
+                        <FormSuccess message={loginResult.code} />
+                    )}
+                    {!loginResult.success && loginResult.code.length > 0 && (
+                        <FormError message={loginResult.code} />
+                    )}
                     <Button
                         disabled={isPending}
                         type="submit"
