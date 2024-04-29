@@ -23,7 +23,6 @@ model User {
   name          String
   username      String    @unique
   email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
   subid         String?
   password      String?
   image         String?

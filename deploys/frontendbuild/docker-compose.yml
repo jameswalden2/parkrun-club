@@ -5,29 +5,25 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: parkrunclub
+      # POSTGRES_DB: parkrunclub
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
     ports:
       - 5432:5432
-    volumes:
-      - ./artifacts/pgdata:/var/lib/postgresql/data
     networks:
       - frontendbuild
 
   frontendbuild:
     build:
       context: ../..
-      dockerfile: frontend/Dockerfile
+      dockerfile: frontend/Dockerfile.dev
     image: frontendbuild
-    working_dir: /app
     ports:
       - 3000:3000
-    command: ["build"]
     depends_on:
       - builddb
-    volumes:
-      - ../../frontend/src/:/app/src/
+    # volumes:
+    #   - ~/.gitconfig:/etc/gitconfig
     networks:
       - frontendbuild
 

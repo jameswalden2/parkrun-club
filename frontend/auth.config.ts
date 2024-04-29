@@ -5,6 +5,7 @@ import Credentials from "next-auth/providers/credentials";
 
 import { LoginSchema } from "@/schemas";
 import { getUserByUsername } from "@/data/user";
+import { User } from "@prisma/client";
 
 export default {
     providers: [
@@ -20,7 +21,7 @@ export default {
                 if (validatedFields.success) {
                     const { username, password } = validatedFields.data;
 
-                    const user = await getUserByUsername(username);
+                    const user = (await getUserByUsername(username)) as User;
                     if (!user || !user.password) return null;
 
                     const passwordsMatch = await bcrypt.compare(

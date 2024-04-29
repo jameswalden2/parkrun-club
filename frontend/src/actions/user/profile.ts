@@ -59,7 +59,7 @@ export type UpdateUserProfileResultType = {
     code: string;
 };
 
-export const getUserInformation = async () => {
+export const getUserInformation = async (): Promise<UserProfileType | null> => {
     const user = await currentUser();
 
     if (!user) {

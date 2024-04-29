@@ -59,6 +59,7 @@ services:
     environment:
       - REACT_APP_BACKEND_SERVICE_NAME=parkrunclub-backend
       - REACT_APP_BACKEND_PORT=8000
+    command: ["npm", "run", "dev"]
     ports:
       - 3000:3000
     depends_on:

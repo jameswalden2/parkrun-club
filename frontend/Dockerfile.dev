@@ -1,23 +1,37 @@
-ARG NODE_VERSION=20-alpine
+ARG NODE_VERSION=20
 
 # stage 1: build
-FROM node:${NODE_VERSION} as builder
-
-WORKDIR /build
-
-RUN git clone
-
-RUN npm install
-
-COPY frontend/ .
-
-# stage 2: run dev mode
 FROM node:${NODE_VERSION}
 
-WORKDIR /app
+WORKDIR /parkrun-club/frontend
 
-COPY --from=builder /build/ /app/
+# Install git and openssh-client for git over SSH
+RUN apt-get install git openssh-client
 
-ENTRYPOINT ["npm", "run"]
+# Add the SSH key
+COPY frontend/build_ssh_key /root/.ssh/id_rsa
 
-CMD ["dev"]
+# Set the correct permissions for the private key
+RUN chmod 600 /root/.ssh/id_rsa
+
+# Add GitHub's host key to known_hosts to prevent "Host key verification failed" errors
+# Note: Replace github.com with your own Git server's domain if different
+
+# RUN ssh-keyscan github.com >> /root/.ssh/known_hosts && \
+#     chmod 644 /root/.ssh/known_hosts
+
+# Clone your repository
+# Note: Replace the URL with your repository's SSH URL
+
+# RUN git clone git@github.com:jameswalden2/parkrun-club.git parkrun-club
+
+COPY frontend/package.json /parkrun-club/frontend/package.json
+RUN npm --prefix /parkrun-club/frontend install --production=false
+
+COPY frontend/src /parkrun-club/frontend/src
+COPY frontend/.eslintrc.json frontend/auth.config.ts frontend/auth.ts frontend/components.json frontend/next.config.js frontend/postcss.config.js frontend/tailwind.config.ts frontend/tsconfig.json /parkrun-club/frontend/
+
+COPY frontend/build_script.sh /parkrun-club/frontend/build_script.sh
+RUN chmod +x /parkrun-club/frontend/build_script.sh
+
+ENTRYPOINT [ "sh", "/parkrun-club/frontend/build_script.sh" ]

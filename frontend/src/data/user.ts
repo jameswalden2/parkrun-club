@@ -1,7 +1,9 @@
 import { db } from "@/lib/prisma";
 import { UserType } from "@/types/UserTypes";
 
-export const getUserByUsername = async (username: string) => {
+export const getUserByUsername = async (
+    username: string
+): Promise<UserType | null> => {
     try {
         const user = await db.user.findUnique({ where: { username } });
         return user;

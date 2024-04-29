@@ -178,3 +178,5 @@ cython_debug/
 #.idea/
 
 .python-version
+
+build_ssh_key*
