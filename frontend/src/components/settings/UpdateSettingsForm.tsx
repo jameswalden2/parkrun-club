@@ -27,6 +27,7 @@ import {
 import { getSettings } from "@/actions/settings/getSettings";
 import { useAtom } from "jotai";
 import { userSettingsAtom } from "@/atoms/atoms";
+import InfoBoxWrapper from "../wrappers/InfoBoxWrapper";
 
 type UpdateSettingsFormProps = {
     className?: string;
@@ -141,10 +142,10 @@ export default function UpdateSettingsForm({
             </Form>
             {updateSettingsSuccess.success &&
                 updateSettingsSuccess.code == "success" && (
-                    <div className="p-4 bg-green-400 text-white rounded-md space-y-2">
+                    <InfoBoxWrapper success className="mt-4">
                         <h5>Settings Updated!</h5>
                         <p>Reload to apply them.</p>
-                    </div>
+                    </InfoBoxWrapper>
                 )}
         </CardWrapper>
     );

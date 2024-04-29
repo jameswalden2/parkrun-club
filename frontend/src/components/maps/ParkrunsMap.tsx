@@ -33,16 +33,29 @@ export default function ParkrunsMap() {
     const user = useCurrentUser();
 
     useEffect(() => {
-        fetch("./parkrun/parkrun_points.geojson")
-            .then((response) => response.json())
-            .then((json) => {
-                setParkrunPointsData(json.features);
-            });
-        fetch("./parkrun/parkrun_polygons.geojson")
-            .then((response) => response.json())
-            .then((json) => {
+        const fetchData = async () => {
+            // Fetching parkrun points data
+            try {
+                await fetch("/api/parkrun/points")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setParkrunPointsData(data.features);
+                    });
+            } catch (error) {
+                console.error("Failed to fetch parkrun points data:", error);
+            }
+
+            // Fetching parkrun polygons data
+            try {
+                const response = await fetch("/api/parkrun/polygons");
+                const json = await response.json();
                 setParkrunPolygonsData(json);
-            });
+            } catch (error) {
+                console.error("Failed to fetch parkrun polygons data:", error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const modifiedParkrunPolygonsData = useMemo(() => {
@@ -122,21 +135,23 @@ export default function ParkrunsMap() {
 
     const parkrunPoints = useMemo(
         () =>
-            parkrunPointsData.map((parkrun) => (
-                <span key={parkrun.id} className="z-10">
-                    <Marker
-                        longitude={parkrun.geometry.coordinates[0]}
-                        latitude={parkrun.geometry.coordinates[1]}
-                        anchor="bottom"
-                        style={{ zIndex: 6 }}
-                        onClick={() => {
-                            handleMarkerClick(parkrun.properties);
-                        }}
-                    >
-                        <Pin size={14} fill="#3ed4cf" />
-                    </Marker>
-                </span>
-            )),
+            parkrunPointsData
+                ? parkrunPointsData.map((parkrun) => (
+                      <span key={parkrun.id} className="z-10">
+                          <Marker
+                              longitude={parkrun.geometry.coordinates[0]}
+                              latitude={parkrun.geometry.coordinates[1]}
+                              anchor="bottom"
+                              style={{ zIndex: 6 }}
+                              onClick={() => {
+                                  handleMarkerClick(parkrun.properties);
+                              }}
+                          >
+                              <Pin size={14} fill="#3ed4cf" />
+                          </Marker>
+                      </span>
+                  ))
+                : [],
         [parkrunPointsData, handleMarkerClick]
     );
 

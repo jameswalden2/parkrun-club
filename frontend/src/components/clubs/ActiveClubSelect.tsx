@@ -92,24 +92,26 @@ export default function ActiveClubSelect() {
                 </Select>
             )}
 
-            {availableParkrunClubs.length == 0 && !isPending && (
-                <InfoBoxWrapper>
-                    <p>
-                        Looks like you&apos;re not part of any clubs, go and
-                        create a new club or join an existing one!
-                    </p>
-                    <RedirectButton
-                        buttonText="Create a Club"
-                        redirectURL="/club/create"
-                        className="mt-4"
-                    />
-                    <RedirectButton
-                        className="mt-4"
-                        buttonText="Join a Club"
-                        redirectURL="/club/join"
-                    />
-                </InfoBoxWrapper>
-            )}
+            {availableParkrunClubs &&
+                availableParkrunClubs.length == 0 &&
+                !isPending && (
+                    <InfoBoxWrapper>
+                        <p>
+                            Looks like you&apos;re not part of any clubs, go and
+                            create a new club or join an existing one!
+                        </p>
+                        <RedirectButton
+                            buttonText="Create a Club"
+                            redirectURL="/club/create"
+                            className="mt-4"
+                        />
+                        <RedirectButton
+                            className="mt-4"
+                            buttonText="Join a Club"
+                            redirectURL="/club/join"
+                        />
+                    </InfoBoxWrapper>
+                )}
         </div>
     );
 }

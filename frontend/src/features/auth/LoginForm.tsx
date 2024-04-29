@@ -123,9 +123,6 @@ export const LoginForm = () => {
                             )}
                         />
                     </div>
-                    {!loginResult.success && (
-                        <FormError message={loginResult.code} />
-                    )}
                     {loginResult.success && (
                         <FormSuccess message={loginResult.code} />
                     )}

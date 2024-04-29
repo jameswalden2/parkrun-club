@@ -1,4 +1,3 @@
-import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/prisma";
 
 import { NextResponse, NextRequest } from "next/server";
@@ -18,7 +17,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-    console.log("DELETE");
     const body = await request.json();
     const deletedParkrun = await db.completedParkrun.delete({
         where: {
