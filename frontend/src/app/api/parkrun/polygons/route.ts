@@ -11,7 +11,7 @@ export async function GET() {
 
     try {
         const data = await readFile(filePath, "utf8");
-        const jsonData = JSON.parse(data); // Parse the JSON string to an object
+        const jsonData = JSON.parse(data);
         return NextResponse.json(jsonData);
     } catch (err) {
         return NextResponse.json({ error: "Failed to read file" });

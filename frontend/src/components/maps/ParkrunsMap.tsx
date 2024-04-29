@@ -39,6 +39,8 @@ export default function ParkrunsMap() {
                 await fetch("/api/parkrun/points")
                     .then((response) => response.json())
                     .then((data) => {
+                        console.log("POINTS FEATURES");
+                        console.log(data.features);
                         setParkrunPointsData(data.features);
                     });
             } catch (error) {
@@ -47,9 +49,13 @@ export default function ParkrunsMap() {
 
             // Fetching parkrun polygons data
             try {
-                const response = await fetch("/api/parkrun/polygons");
-                const json = await response.json();
-                setParkrunPolygonsData(json);
+                await fetch("/api/parkrun/polygons")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("POLYGONS DATA");
+                        console.log(data);
+                        setParkrunPolygonsData(data);
+                    });
             } catch (error) {
                 console.error("Failed to fetch parkrun polygons data:", error);
             }
