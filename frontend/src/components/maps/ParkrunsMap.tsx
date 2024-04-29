@@ -33,20 +33,40 @@ export default function ParkrunsMap() {
     const user = useCurrentUser();
 
     useEffect(() => {
-        fetch("./parkrun/parkrun_points.geojson")
-            .then((response) => response.json())
-            .then((json) => {
-                setParkrunPointsData(json.features);
-            });
-        fetch("./parkrun/parkrun_polygons.geojson")
-            .then((response) => response.json())
-            .then((json) => {
-                setParkrunPolygonsData(json);
-            });
+        const fetchData = async () => {
+            // Fetching parkrun points data
+            try {
+                await fetch("/api/parkrun/points")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("POINTS FEATURES");
+                        console.log(data.features);
+                        setParkrunPointsData(data.features);
+                    });
+            } catch (error) {
+                console.error("Failed to fetch parkrun points data:", error);
+            }
+
+            // Fetching parkrun polygons data
+            try {
+                await fetch("/api/parkrun/polygons")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("POLYGONS DATA");
+                        console.log(data);
+                        setParkrunPolygonsData(data);
+                    });
+            } catch (error) {
+                console.error("Failed to fetch parkrun polygons data:", error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const modifiedParkrunPolygonsData = useMemo(() => {
-        if (!parkrunPolygonsData.features) return parkrunPolygonsData;
+        if (!parkrunPolygonsData.features || !completedParkrunList)
+            return parkrunPolygonsData;
         const features = parkrunPolygonsData.features.map((feature) => ({
             ...feature,
             properties: {
@@ -64,7 +84,7 @@ export default function ParkrunsMap() {
     const handleMarkerClick = useCallback(
         (parkrun: ParkrunType) => {
             // Check if the parkrun is already completed
-            if (!user) {
+            if (!user || !completedParkrunList) {
                 return;
             }
             const isCompleted = completedParkrunList.some(
@@ -122,21 +142,23 @@ export default function ParkrunsMap() {
 
     const parkrunPoints = useMemo(
         () =>
-            parkrunPointsData.map((parkrun) => (
-                <span key={parkrun.id} className="z-10">
-                    <Marker
-                        longitude={parkrun.geometry.coordinates[0]}
-                        latitude={parkrun.geometry.coordinates[1]}
-                        anchor="bottom"
-                        style={{ zIndex: 6 }}
-                        onClick={() => {
-                            handleMarkerClick(parkrun.properties);
-                        }}
-                    >
-                        <Pin size={14} fill="#3ed4cf" />
-                    </Marker>
-                </span>
-            )),
+            parkrunPointsData
+                ? parkrunPointsData.map((parkrun) => (
+                      <span key={parkrun.id} className="z-10">
+                          <Marker
+                              longitude={parkrun.geometry.coordinates[0]}
+                              latitude={parkrun.geometry.coordinates[1]}
+                              anchor="bottom"
+                              style={{ zIndex: 6 }}
+                              onClick={() => {
+                                  handleMarkerClick(parkrun.properties);
+                              }}
+                          >
+                              <Pin size={14} fill="#3ed4cf" />
+                          </Marker>
+                      </span>
+                  ))
+                : [],
         [parkrunPointsData, handleMarkerClick]
     );
 

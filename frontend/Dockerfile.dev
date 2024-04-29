@@ -3,7 +3,7 @@ ARG NODE_VERSION=20
 # stage 1: build
 FROM node:${NODE_VERSION}
 
-WORKDIR /parkrun-club/frontend
+WORKDIR /parkrun-club
 
 # Install git and openssh-client for git over SSH
 RUN apt-get install git openssh-client
@@ -25,13 +25,20 @@ RUN chmod 600 /root/.ssh/id_rsa
 
 # RUN git clone git@github.com:jameswalden2/parkrun-club.git parkrun-club
 
+RUN npm i vercel
+
+COPY frontend/.vercel /parkrun-club/.vercel/
+
 COPY frontend/package.json /parkrun-club/frontend/package.json
-RUN npm --prefix /parkrun-club/frontend install --production=false
+COPY frontend/src/prisma /parkrun-club/frontend/src/prisma
+# RUN npm --prefix /parkrun-club/frontend install --production=false
 
 COPY frontend/src /parkrun-club/frontend/src
 COPY frontend/.eslintrc.json frontend/auth.config.ts frontend/auth.ts frontend/components.json frontend/next.config.js frontend/postcss.config.js frontend/tailwind.config.ts frontend/tsconfig.json /parkrun-club/frontend/
 
 COPY frontend/build_script.sh /parkrun-club/frontend/build_script.sh
 RUN chmod +x /parkrun-club/frontend/build_script.sh
+
+RUN mkdir /parkrun-club/frontend/artifacts
 
 ENTRYPOINT [ "sh", "/parkrun-club/frontend/build_script.sh" ]

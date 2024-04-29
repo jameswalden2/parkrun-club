@@ -1,3 +1,5 @@
+import argparse
+
 from dotenv import load_dotenv
 
 from backend.etl.extract import extract_db_to_geojson
@@ -26,10 +28,12 @@ def parkrun_data_to_db(file_prefix: str):
         save_path=DB_UPLOAD_SAVE_PATH,
     )
 
+    print("Inserting into db...")
     insert_parkruns(parkruns_list=data_to_insert)
 
 
 def db_to_geojson():
+    print("Downloading from db...")
     POINTS_GEOJSON_PATH = "./data/3_db_download/parkrun_points.geojson"
     POLYGONS_GEOJSON_PATH = "./data/3_db_download/parkrun_polygons.geojson"
 
@@ -41,14 +45,30 @@ def db_to_geojson():
 
 def parkrun_data_to_geojson_pipeline(config: dict):
     for file_prefix in config.get("file_prefixes", []):
+        print(f"Generating: {file_prefix}")
         parkrun_data_to_db(file_prefix=file_prefix)
 
     db_to_geojson()
 
 
 if __name__ == "__main__":
-    config_path = "./data/config/pipeline_config.yaml"
+    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser.add_argument("--load-db", action="store_true", help="Flag to load the database")
+    parser.add_argument("--generate", action="store_true", help="Flag to generate content")
 
-    config = load_config(file_path=config_path)
+    args = parser.parse_args()
 
-    parkrun_data_to_geojson_pipeline(config=config)
+    load_db = args.load_db
+    generate = args.generate
+
+    if load_db:
+        print("Loading db...")
+        db_to_geojson()
+
+    if generate:
+        print("Generating parkruns...")
+        config_path = "./data/config/pipeline_config.yaml"
+
+        config = load_config(file_path=config_path)
+
+        parkrun_data_to_geojson_pipeline(config=config)

@@ -27,9 +27,14 @@ export default function ClubLeaderboardTable({
     const user = useCurrentUser();
 
     useEffect(() => {
-        leaderboard({ parkrunClubId: activeParkrunClub?.id }).then((x) => {
-            setLeaderboardData(x);
-        });
+        leaderboard({ parkrunClubId: activeParkrunClub?.id })
+            .then((x) => {
+                setLeaderboardData(x);
+            })
+            .catch((error) => {
+                console.log("Error getting leaderboard:");
+                console.log(error);
+            });
     }, [setLeaderboardData, activeParkrunClub]);
 
     let columns: ColumnDef<LeaderboardRowType>[] = [

@@ -11,6 +11,7 @@ def insert_parkruns(parkruns_list):
     session = Session()
 
     for parkrun in parkruns_list:
+        print(f"Checking for {parkrun['name']}...")
         existing_parkrun = session.query(Parkrun).where(Parkrun.name == parkrun["name"]).all()
         if len(existing_parkrun) > 0:
             print(f"Parkrun ({parkrun['name']}) already exists.")

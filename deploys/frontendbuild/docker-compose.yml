@@ -1,29 +1,13 @@
 version: "3.8"
 
 services:
-  builddb:
-    image: postgres:latest
-    restart: always
-    environment:
-      # POSTGRES_DB: parkrunclub
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
-    ports:
-      - 5432:5432
-    networks:
-      - frontendbuild
-
   frontendbuild:
     build:
       context: ../..
       dockerfile: frontend/Dockerfile.dev
     image: frontendbuild
-    ports:
-      - 3000:3000
-    depends_on:
-      - builddb
-    # volumes:
-    #   - ~/.gitconfig:/etc/gitconfig
+    volumes:
+      - ./artifacts:/parkrun-club/frontend/artifacts
     networks:
       - frontendbuild
 

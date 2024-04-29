@@ -28,15 +28,31 @@ export default function ParkrunClub() {
     const setUserSettings = useSetAtom(userSettingsAtom);
     useEffect(() => {
         if (!activeParkrunClub) {
-            getActiveClub().then((data) => {
-                console.log(
-                    `Setting active parkrun data: ${JSON.stringify(data)}`
-                );
-                setActiveParkrunClub(data.parkrunClub);
-            });
-            getSettings().then((data) => {
-                setUserSettings(data.settings);
-            });
+            getActiveClub()
+                .then((data) => {
+                    console.log(
+                        `Setting active parkrun data: ${JSON.stringify(data)}`
+                    );
+                    if (!data || !data.parkrunClub) {
+                        return;
+                    }
+                    setActiveParkrunClub(data.parkrunClub);
+                })
+                .catch((error) => {
+                    console.log("Error getting active club:");
+                    console.log(error);
+                });
+            getSettings()
+                .then((data) => {
+                    if (!data) {
+                        return;
+                    }
+                    setUserSettings(data.settings);
+                })
+                .catch((error) => {
+                    console.log("Error getting settings:");
+                    console.log(error);
+                });
         }
     }, [
         activeParkrunClub,
@@ -46,11 +62,14 @@ export default function ParkrunClub() {
     ]);
 
     useEffect(() => {
-        completedParkruns(isClubMapSelected, activeParkrunClub?.id).then(
-            (x) => {
+        completedParkruns(isClubMapSelected, activeParkrunClub?.id)
+            .then((x) => {
                 setCompletedParkrunList(x);
-            }
-        );
+            })
+            .catch((error) => {
+                console.log("Error getting completedParkruns");
+                console.log(error);
+            });
     }, [isClubMapSelected, activeParkrunClub, setCompletedParkrunList]);
 
     return (
