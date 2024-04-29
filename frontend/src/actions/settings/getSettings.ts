@@ -34,6 +34,6 @@ export const getSettings = async (): Promise<GetSettingsResultType> => {
 
         return { success: true, settings: userSettings, code: "success" };
     } catch (error) {
-        return { success: false, settings: null, code: String(error) };
+        throw error;
     }
 };
