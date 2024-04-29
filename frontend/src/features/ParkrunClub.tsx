@@ -62,11 +62,14 @@ export default function ParkrunClub() {
     ]);
 
     useEffect(() => {
-        completedParkruns(isClubMapSelected, activeParkrunClub?.id).then(
-            (x) => {
+        completedParkruns(isClubMapSelected, activeParkrunClub?.id)
+            .then((x) => {
                 setCompletedParkrunList(x);
-            }
-        );
+            })
+            .catch((error) => {
+                console.log("Error getting completedParkruns");
+                console.log(error);
+            });
     }, [isClubMapSelected, activeParkrunClub, setCompletedParkrunList]);
 
     return (

@@ -68,13 +68,18 @@ export default function UpdateUserSettingsDialog() {
 
     const handleSubmit = (values: z.infer<typeof UpdateUserSettingsSchema>) => {
         startTransition(() => {
-            updateUserProfile(values).then((data) => {
-                if (!data || !data.newProfile) {
-                    return;
-                }
-                form.reset(data.newProfile);
-                setUpdateResult(data);
-            });
+            updateUserProfile(values)
+                .then((data) => {
+                    if (!data || !data.newProfile) {
+                        return;
+                    }
+                    form.reset(data.newProfile);
+                    setUpdateResult(data);
+                })
+                .catch((error) => {
+                    console.log("Error updating user profile:");
+                    console.log(error);
+                });
         });
     };
 

@@ -65,7 +65,8 @@ export default function ParkrunsMap() {
     }, []);
 
     const modifiedParkrunPolygonsData = useMemo(() => {
-        if (!parkrunPolygonsData.features) return parkrunPolygonsData;
+        if (!parkrunPolygonsData.features || !completedParkrunList)
+            return parkrunPolygonsData;
         const features = parkrunPolygonsData.features.map((feature) => ({
             ...feature,
             properties: {
@@ -83,7 +84,7 @@ export default function ParkrunsMap() {
     const handleMarkerClick = useCallback(
         (parkrun: ParkrunType) => {
             // Check if the parkrun is already completed
-            if (!user) {
+            if (!user || !completedParkrunList) {
                 return;
             }
             const isCompleted = completedParkrunList.some(

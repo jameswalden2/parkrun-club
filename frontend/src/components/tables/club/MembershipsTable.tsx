@@ -65,22 +65,27 @@ export default function MembershipsTable({
         parkrunClubMembership: ParkrunClubMembershipType
     ) => {
         startTransition(() => {
-            leaveClub(parkrunClubMembership.id).then(async (result) => {
-                if (!result.success) {
-                    console.log("Oh no!");
-                    return;
-                }
+            leaveClub(parkrunClubMembership.id)
+                .then(async (result) => {
+                    if (!result.success) {
+                        console.log("Oh no!");
+                        return;
+                    }
 
-                if (
-                    activeParkrunClub &&
-                    activeParkrunClub.id == parkrunClubMembership.id
-                ) {
-                    setActiveParkrunClub(null);
-                    await setActiveClub(null);
-                }
+                    if (
+                        activeParkrunClub &&
+                        activeParkrunClub.id == parkrunClubMembership.id
+                    ) {
+                        setActiveParkrunClub(null);
+                        await setActiveClub(null);
+                    }
 
-                getMemberships();
-            });
+                    getMemberships();
+                })
+                .catch((error) => {
+                    console.log("Error leaving club:");
+                    console.log(error);
+                });
         });
     };
 

@@ -15,12 +15,17 @@ export default function UserProfile() {
     const user = useCurrentUser();
 
     useEffect(() => {
-        getUserProfile().then((data) => {
-            if (!data.success) {
-                return;
-            }
-            setUserProfile(data.profile);
-        });
+        getUserProfile()
+            .then((data) => {
+                if (!data.success) {
+                    return;
+                }
+                setUserProfile(data.profile);
+            })
+            .catch((error) => {
+                console.log("Error getting user profile:");
+                console.log(error);
+            });
     }, [setUserProfile]);
 
     const handleUpdateProfile = () => {};

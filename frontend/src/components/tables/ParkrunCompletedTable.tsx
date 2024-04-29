@@ -112,12 +112,17 @@ export default function ParkrunCompletedTable({
 
     const handleSaveChanges = () => {
         startTransition(() => {
-            updateCompletedParkruns(updatedCompletedParkrunMap).then((data) => {
-                if (data.success) {
-                    setUpdateParkrunsResult(data);
-                    setCompletedParkrunList(data.completedParkruns);
-                }
-            });
+            updateCompletedParkruns(updatedCompletedParkrunMap)
+                .then((data) => {
+                    if (data.success) {
+                        setUpdateParkrunsResult(data);
+                        setCompletedParkrunList(data.completedParkruns);
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error updating completed parkruns:");
+                    console.log(error);
+                });
         });
     };
 
