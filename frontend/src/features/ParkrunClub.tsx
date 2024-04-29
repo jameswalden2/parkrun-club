@@ -33,7 +33,7 @@ export default function ParkrunClub() {
                     console.log(
                         `Setting active parkrun data: ${JSON.stringify(data)}`
                     );
-                    if (!data) {
+                    if (!data || !data.parkrunClub) {
                         return;
                     }
                     setActiveParkrunClub(data.parkrunClub);
