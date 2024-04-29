@@ -32,9 +32,15 @@ export default function ParkrunClub() {
                 console.log(
                     `Setting active parkrun data: ${JSON.stringify(data)}`
                 );
+                if (!data) {
+                    return;
+                }
                 setActiveParkrunClub(data.parkrunClub);
             });
             getSettings().then((data) => {
+                if (!data) {
+                    return;
+                }
                 setUserSettings(data.settings);
             });
         }

@@ -39,6 +39,6 @@ export const getActiveClub = async (): Promise<GetActiveClubResultType> => {
 
         return { parkrunClub: parkrunClub, success: true, code: "success" };
     } catch (error) {
-        throw error;
+        return { parkrunClub: null, success: false, code: String(error) };
     }
 };
