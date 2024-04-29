@@ -112,7 +112,7 @@ export function DataTable<TData, TValue>({
                 </TableBody>
             </Table>
 
-            {data.length > 0 && pageSize < data.length && (
+            {data && data.length > 0 && pageSize < data.length && (
                 <div className="flex items-center justify-between space-x-2 p-2">
                     <Button
                         variant="outline"

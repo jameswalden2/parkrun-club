@@ -126,9 +126,12 @@ export const LoginForm = () => {
                     {loginResult.success && (
                         <FormSuccess message={loginResult.code} />
                     )}
-                    {!loginResult.success && loginResult.code.length > 0 && (
-                        <FormError message={loginResult.code} />
-                    )}
+                    {loginResult &&
+                        !loginResult.success &&
+                        loginResult.code &&
+                        loginResult.code.length > 0 && (
+                            <FormError message={loginResult.code} />
+                        )}
                     <Button
                         disabled={isPending}
                         type="submit"
