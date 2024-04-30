@@ -174,7 +174,7 @@ export default function MembershipsTable({
         <div className={className}>
             <DataTable
                 columns={columns}
-                data={parkrunClubMemberships}
+                data={parkrunClubMemberships || []}
                 pageSize={pageSize}
             />
         </div>

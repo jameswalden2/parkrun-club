@@ -14,6 +14,7 @@ import {
     userSettingsAtom,
     completedParkrunsAtom,
     isClubMapSelectedAtom,
+    isFetchingCompletedParkrunsAtom,
 } from "@/atoms/atoms";
 import { getActiveClub } from "@/actions/club/active/getActiveClub";
 import { getSettings } from "@/actions/settings/getSettings";
@@ -26,6 +27,8 @@ export default function ParkrunClub() {
     const setCompletedParkrunList = useSetAtom(completedParkrunsAtom);
     const isClubMapSelected = useAtomValue(isClubMapSelectedAtom);
     const setUserSettings = useSetAtom(userSettingsAtom);
+    const [isFetchingCompletedParkruns, setIsFetchingCompletedParkruns] =
+        useAtom(isFetchingCompletedParkrunsAtom);
     useEffect(() => {
         if (!activeParkrunClub) {
             getActiveClub()
@@ -62,6 +65,7 @@ export default function ParkrunClub() {
     ]);
 
     useEffect(() => {
+        setIsFetchingCompletedParkruns(true);
         completedParkruns(isClubMapSelected, activeParkrunClub?.id)
             .then((x) => {
                 setCompletedParkrunList(x);
@@ -69,8 +73,16 @@ export default function ParkrunClub() {
             .catch((error) => {
                 console.log("Error getting completedParkruns");
                 console.log(error);
+            })
+            .finally(() => {
+                setIsFetchingCompletedParkruns(false);
             });
-    }, [isClubMapSelected, activeParkrunClub, setCompletedParkrunList]);
+    }, [
+        isClubMapSelected,
+        activeParkrunClub,
+        setCompletedParkrunList,
+        setIsFetchingCompletedParkruns,
+    ]);
 
     return (
         <div className="w-full">

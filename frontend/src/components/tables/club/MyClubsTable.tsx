@@ -130,7 +130,7 @@ export default function MyClubsTable({
         <div className={className}>
             <DataTable
                 columns={columns}
-                data={myParkrunClubs}
+                data={myParkrunClubs || []}
                 pageSize={pageSize}
             />
         </div>

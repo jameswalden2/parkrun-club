@@ -25,3 +25,7 @@ export const isClubMapSelectedAtom = atom<boolean>(false);
 export const userSettingsAtom = atom<UserSettingsType | null>(null);
 
 export const userProfileAtom = atom<UserProfileType | null>(null);
+
+export const isFetchingCompletedParkrunsAtom = atom<boolean>(false);
+
+export const isUpdatingCompletedParkrunsAtom = atom<boolean>(false);

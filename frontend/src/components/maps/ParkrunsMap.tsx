@@ -6,12 +6,17 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Pin from "@/components/maps/Pin";
 
-import { completedParkrunsAtom, userSettingsAtom } from "@/atoms/atoms";
-import { useAtom, useAtomValue } from "jotai";
+import {
+    completedParkrunsAtom,
+    isUpdatingCompletedParkrunsAtom,
+    userSettingsAtom,
+} from "@/atoms/atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { geojsonPointType, geojsonPolygonsType } from "@/types/GeometryTypes";
 import { ParkrunType } from "@/types/ParkrunTypes";
+import clsx from "clsx";
 
 export default function ParkrunsMap() {
     const [parkrunPointsData, setParkrunPointsData] = useState<
@@ -29,6 +34,10 @@ export default function ParkrunsMap() {
     );
 
     const userSettings = useAtomValue(userSettingsAtom);
+
+    const setIsUpdatingCompletedParkruns = useSetAtom(
+        isUpdatingCompletedParkrunsAtom
+    );
 
     const user = useCurrentUser();
 
@@ -81,9 +90,78 @@ export default function ParkrunsMap() {
         return { ...parkrunPolygonsData, features: features };
     }, [parkrunPolygonsData, completedParkrunList]);
 
+    const deleteCompletedParkrun = useCallback(
+        async (parkrun: ParkrunType) => {
+            setIsUpdatingCompletedParkruns(true);
+
+            const parkrunIndex = completedParkrunList.findIndex(
+                (item) => item.parkrunId == parkrun.id
+            );
+            await fetch("/api/parkrun/completed-parkrun", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(completedParkrunList[parkrunIndex]),
+            })
+                .then((response) => response.json())
+                .then(() => {
+                    // Update the local state to reflect the change
+                    setCompletedParkrunList((prevList) =>
+                        prevList.filter((item) => item.parkrunId !== parkrun.id)
+                    );
+                })
+                .catch((error) => {
+                    throw new Error("Error deleting parkrun:", error);
+                })
+                .finally(() => {
+                    setIsUpdatingCompletedParkruns(false);
+                });
+        },
+        [
+            setCompletedParkrunList,
+            completedParkrunList,
+            setIsUpdatingCompletedParkruns,
+        ]
+    );
+
+    const addCompletedParkrun = useCallback(
+        async (parkrun: ParkrunType) => {
+            if (!user) {
+                return;
+            }
+            setIsUpdatingCompletedParkruns(true);
+            // If the parkrun is not completed, send a POST request to add it
+            await fetch("/api/parkrun/completed-parkrun", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    parkrun: parkrun,
+                    user: user.id,
+                }),
+            })
+                .then((response) => response.json())
+                .then((newParkrun) => {
+                    // Update the local state to include the new parkrun
+                    setCompletedParkrunList((prevList) => [
+                        ...prevList,
+                        newParkrun,
+                    ]);
+                })
+                .catch((error) => {
+                    throw new Error("Error adding parkrun:", error);
+                })
+                .finally(() => {
+                    setIsUpdatingCompletedParkruns(false);
+                });
+        },
+        [setCompletedParkrunList, user, setIsUpdatingCompletedParkruns]
+    );
+
     const handleMarkerClick = useCallback(
         (parkrun: ParkrunType) => {
-            // Check if the parkrun is already completed
             if (!user || !completedParkrunList) {
                 return;
             }
@@ -92,59 +170,24 @@ export default function ParkrunsMap() {
             );
 
             if (isCompleted) {
-                // If the parkrun is already completed, send a DELETE request
-                const parkrunIndex = completedParkrunList.findIndex(
-                    (item) => item.parkrunId == parkrun.id
-                );
-                fetch("/api/parkrun/completed-parkrun", {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(completedParkrunList[parkrunIndex]),
-                })
-                    .then((response) => response.json())
-                    .then(() => {
-                        // Update the local state to reflect the change
-                        setCompletedParkrunList((prevList) =>
-                            prevList.filter(
-                                (item) => item.parkrunId !== parkrun.id
-                            )
-                        );
-                    })
-                    .catch((error) => {
-                        throw new Error("Error deleting parkrun:", error);
-                    });
+                deleteCompletedParkrun(parkrun);
             } else {
-                // If the parkrun is not completed, send a POST request to add it
-                fetch("/api/parkrun/completed-parkrun", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ parkrun: parkrun, user: user.id }),
-                })
-                    .then((response) => response.json())
-                    .then((newParkrun) => {
-                        // Update the local state to include the new parkrun
-                        setCompletedParkrunList((prevList) => [
-                            ...prevList,
-                            newParkrun,
-                        ]);
-                    })
-                    .catch((error) => {
-                        throw new Error("Error adding parkrun:", error);
-                    });
+                addCompletedParkrun(parkrun);
             }
         },
-        [completedParkrunList, user, setCompletedParkrunList]
+        [
+            completedParkrunList,
+            user,
+            addCompletedParkrun,
+            deleteCompletedParkrun,
+        ]
     );
 
     const parkrunPoints = useMemo(
         () =>
             parkrunPointsData
                 ? parkrunPointsData.map((parkrun) => (
-                      <span key={parkrun.id} className="z-10">
+                      <span key={parkrun.id} className={clsx("z-10")}>
                           <Marker
                               longitude={parkrun.geometry.coordinates[0]}
                               latitude={parkrun.geometry.coordinates[1]}
@@ -203,7 +246,6 @@ export default function ParkrunsMap() {
             }}
             minZoom={3}
             mapStyle="mapbox://styles/mapbox/streets-v12"
-            onClick={(event) => console.log(event)}
         >
             <Source
                 id="parkrun_polygons"
