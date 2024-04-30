@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
                     {table &&
                     table.getRowModel() &&
                     table.getRowModel().rows &&
-                    table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
