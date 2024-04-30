@@ -24,7 +24,6 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import clsx from "clsx";
 import BouncingLoading from "../loading/BouncingLoading";
-import LoadingSpinner from "../loading/LoadingSpinner";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -84,14 +83,13 @@ export function DataTable<TData, TValue>({
                     ))}
                 </TableHeader>
                 <TableBody>
-                    {table &&
-                    table.getRowModel() &&
-                    table.getRowModel().rows &&
-                    table.getRowModel().rows.length ? (
+                    {table?.getRowModel()?.rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
-                                data-state={row.getIsSelected() && "selected"}
+                                data-state={
+                                    row.getIsSelected() ? "selected" : undefined
+                                }
                                 className={clsx(
                                     rowFormatter ? rowFormatter(row) : ""
                                 )}

@@ -73,7 +73,7 @@ export default function ClubLeaderboardTable({
         <div className={className}>
             <DataTable
                 columns={columns}
-                data={leaderboardData}
+                data={leaderboardData || []}
                 pageSize={pageSize}
                 rowFormatter={rowFormatter}
                 loading={isFetchingLeaderboard}

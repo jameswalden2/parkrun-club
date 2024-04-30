@@ -189,7 +189,7 @@ export default function ParkrunCompletedTable({
             <div>
                 <DataTable
                     columns={columns}
-                    data={completedParkrunList}
+                    data={completedParkrunList || []}
                     pageSize={pageSize}
                     rowFormatter={
                         isClubMapSelected && !forceNoClub
