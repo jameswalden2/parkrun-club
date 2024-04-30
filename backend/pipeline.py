@@ -1,4 +1,5 @@
 import argparse
+import json
 
 from dotenv import load_dotenv
 
@@ -6,6 +7,9 @@ from backend.etl.extract import extract_db_to_geojson
 from backend.etl.load import insert_parkruns
 from backend.etl.transform import convert_geojson_for_db
 from backend.utils.config import load_config
+
+POINTS_GEOJSON_PATH = "./data/3_db_download/parkrun_points.geojson"
+POLYGONS_GEOJSON_PATH = "./data/3_db_download/parkrun_polygons.geojson"
 
 load_dotenv(".env")
 
@@ -34,13 +38,19 @@ def parkrun_data_to_db(file_prefix: str):
 
 def db_to_geojson():
     print("Downloading from db...")
-    POINTS_GEOJSON_PATH = "./data/3_db_download/parkrun_points.geojson"
-    POLYGONS_GEOJSON_PATH = "./data/3_db_download/parkrun_polygons.geojson"
-
     extract_db_to_geojson(
         points_save_path=POINTS_GEOJSON_PATH,
         polygons_save_path=POLYGONS_GEOJSON_PATH,
     )
+
+
+def load_geo_json_to_db():
+    with open(POINTS_GEOJSON_PATH, "r") as f:
+        json_data = json.loads(f.read())
+
+    parkrun_list = [x["properties"] for x in json_data["features"]]
+
+    insert_parkruns(parkruns_list=parkrun_list)
 
 
 def parkrun_data_to_geojson_pipeline(config: dict):
@@ -55,20 +65,24 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process some integers.")
     parser.add_argument("--load-db", action="store_true", help="Flag to load the database")
     parser.add_argument("--generate", action="store_true", help="Flag to generate content")
+    parser.add_argument("--scrape", action="store_true", help="Flag to scrape db")
 
     args = parser.parse_args()
 
     load_db = args.load_db
     generate = args.generate
+    scrape = args.scrape
 
-    if load_db:
+    config_path = "./data/config/pipeline_config.yaml"
+    config = load_config(file_path=config_path)
+
+    if scrape:
         print("Loading db...")
         db_to_geojson()
 
     if generate:
         print("Generating parkruns...")
-        config_path = "./data/config/pipeline_config.yaml"
-
-        config = load_config(file_path=config_path)
-
         parkrun_data_to_geojson_pipeline(config=config)
+
+    if load_db:
+        load_geo_json_to_db()
