@@ -23,12 +23,15 @@ import {
 import { useState } from "react";
 import { Button } from "../ui/button";
 import clsx from "clsx";
+import BouncingLoading from "../loading/BouncingLoading";
+import LoadingSpinner from "../loading/LoadingSpinner";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     pageSize?: number;
     rowFormatter?: (row: Row<TData>) => string;
+    loading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -36,6 +39,7 @@ export function DataTable<TData, TValue>({
     data,
     pageSize = 10,
     rowFormatter,
+    loading = true,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [pagination, setPagination] = useState<PaginationState>({
@@ -99,6 +103,17 @@ export function DataTable<TData, TValue>({
                                 ))}
                             </TableRow>
                         ))
+                    ) : loading ? (
+                        <TableRow>
+                            <TableCell
+                                colSpan={columns.length}
+                                className="h-24 text-center"
+                            >
+                                <div>
+                                    <BouncingLoading />
+                                </div>
+                            </TableCell>
+                        </TableRow>
                     ) : (
                         <TableRow>
                             <TableCell

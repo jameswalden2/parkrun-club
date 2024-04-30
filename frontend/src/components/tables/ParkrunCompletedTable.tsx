@@ -14,6 +14,7 @@ import {
     activeParkrunClubAtom,
     completedParkrunsAtom,
     isClubMapSelectedAtom,
+    isFetchingCompletedParkrunsAtom,
 } from "@/atoms/atoms";
 import { CompletedParkrunType } from "@/types/CompletedParkrunsTypes";
 import { Input } from "../ui/input";
@@ -31,7 +32,6 @@ import {
 import InfoBoxWrapper from "../wrappers/InfoBoxWrapper";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { completedParkruns } from "@/data/completedParkruns";
-import { date } from "zod";
 
 type CompletedParkrunTableProps = {
     pageSize?: number;
@@ -54,6 +54,10 @@ export default function ParkrunCompletedTable({
 
     const isClubMapSelected = useAtomValue(isClubMapSelectedAtom);
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
+
+    const isFetchingCompletedParkruns = useAtomValue(
+        isFetchingCompletedParkrunsAtom
+    );
 
     const [isPending, startTransition] = useTransition();
 
@@ -192,6 +196,7 @@ export default function ParkrunCompletedTable({
                             ? rowFormatter
                             : undefined
                     }
+                    loading={isFetchingCompletedParkruns}
                 />
             </div>
             {editable && (

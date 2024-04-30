@@ -10,7 +10,7 @@ import { leaderboard } from "@/data/leaderboard";
 import { User } from "lucide-react";
 
 import SortableHeader from "../elements/HeaderCell";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 type PerformancesTableProps = {
@@ -25,8 +25,11 @@ export default function ClubLeaderboardTable({
     const [leaderboardData, setLeaderboardData] = useAtom(leaderboardDataAtom);
     const activeParkrunClub = useAtomValue(activeParkrunClubAtom);
     const user = useCurrentUser();
+    const [isFetchingLeaderboard, setIsFetchingLeaderboard] =
+        useState<boolean>(false);
 
     useEffect(() => {
+        setIsFetchingLeaderboard(true);
         leaderboard({ parkrunClubId: activeParkrunClub?.id })
             .then((x) => {
                 setLeaderboardData(x);
@@ -34,6 +37,9 @@ export default function ClubLeaderboardTable({
             .catch((error) => {
                 console.log("Error getting leaderboard:");
                 console.log(error);
+            })
+            .finally(() => {
+                setIsFetchingLeaderboard(false);
             });
     }, [setLeaderboardData, activeParkrunClub]);
 
@@ -70,6 +76,7 @@ export default function ClubLeaderboardTable({
                 data={leaderboardData}
                 pageSize={pageSize}
                 rowFormatter={rowFormatter}
+                loading={isFetchingLeaderboard}
             />
         </div>
     );

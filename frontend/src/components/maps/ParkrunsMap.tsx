@@ -12,8 +12,12 @@ import {
 } from "react";
 import Pin from "@/components/maps/Pin";
 
-import { completedParkrunsAtom, userSettingsAtom } from "@/atoms/atoms";
-import { useAtom, useAtomValue } from "jotai";
+import {
+    completedParkrunsAtom,
+    isUpdatingCompletedParkrunsAtom,
+    userSettingsAtom,
+} from "@/atoms/atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { geojsonPointType, geojsonPolygonsType } from "@/types/GeometryTypes";
@@ -38,6 +42,10 @@ export default function ParkrunsMap() {
     const [isPending, startTrasition] = useTransition();
 
     const userSettings = useAtomValue(userSettingsAtom);
+
+    const setIsUpdatingCompletedParkruns = useSetAtom(
+        isUpdatingCompletedParkrunsAtom
+    );
 
     const user = useCurrentUser();
 
@@ -92,6 +100,8 @@ export default function ParkrunsMap() {
 
     const deleteCompletedParkrun = useCallback(
         async (parkrun: ParkrunType) => {
+            setIsUpdatingCompletedParkruns(true);
+
             const parkrunIndex = completedParkrunList.findIndex(
                 (item) => item.parkrunId == parkrun.id
             );
@@ -111,9 +121,16 @@ export default function ParkrunsMap() {
                 })
                 .catch((error) => {
                     throw new Error("Error deleting parkrun:", error);
+                })
+                .finally(() => {
+                    setIsUpdatingCompletedParkruns(false);
                 });
         },
-        [setCompletedParkrunList, completedParkrunList]
+        [
+            setCompletedParkrunList,
+            completedParkrunList,
+            setIsUpdatingCompletedParkruns,
+        ]
     );
 
     const addCompletedParkrun = useCallback(
@@ -121,6 +138,7 @@ export default function ParkrunsMap() {
             if (!user) {
                 return;
             }
+            setIsUpdatingCompletedParkruns(true);
             // If the parkrun is not completed, send a POST request to add it
             await fetch("/api/parkrun/completed-parkrun", {
                 method: "POST",
@@ -142,9 +160,12 @@ export default function ParkrunsMap() {
                 })
                 .catch((error) => {
                     throw new Error("Error adding parkrun:", error);
+                })
+                .finally(() => {
+                    setIsUpdatingCompletedParkruns(false);
                 });
         },
-        [setCompletedParkrunList, user]
+        [setCompletedParkrunList, user, setIsUpdatingCompletedParkruns]
     );
 
     const handleMarkerClick = useCallback(
