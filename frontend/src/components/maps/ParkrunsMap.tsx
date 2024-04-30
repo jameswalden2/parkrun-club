@@ -3,13 +3,7 @@
 import { Map, Source, Layer, Marker, LayerProps } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import {
-    useEffect,
-    useState,
-    useMemo,
-    useCallback,
-    useTransition,
-} from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Pin from "@/components/maps/Pin";
 
 import {
@@ -38,8 +32,6 @@ export default function ParkrunsMap() {
     const [completedParkrunList, setCompletedParkrunList] = useAtom(
         completedParkrunsAtom
     );
-
-    const [isPending, startTrasition] = useTransition();
 
     const userSettings = useAtomValue(userSettingsAtom);
 
@@ -170,20 +162,18 @@ export default function ParkrunsMap() {
 
     const handleMarkerClick = useCallback(
         (parkrun: ParkrunType) => {
-            startTrasition(() => {
-                if (!user || !completedParkrunList) {
-                    return;
-                }
-                const isCompleted = completedParkrunList.some(
-                    (item) => item.parkrunId === parkrun.id
-                );
+            if (!user || !completedParkrunList) {
+                return;
+            }
+            const isCompleted = completedParkrunList.some(
+                (item) => item.parkrunId === parkrun.id
+            );
 
-                if (isCompleted) {
-                    deleteCompletedParkrun(parkrun);
-                } else {
-                    addCompletedParkrun(parkrun);
-                }
-            });
+            if (isCompleted) {
+                deleteCompletedParkrun(parkrun);
+            } else {
+                addCompletedParkrun(parkrun);
+            }
         },
         [
             completedParkrunList,
@@ -192,10 +182,6 @@ export default function ParkrunsMap() {
             deleteCompletedParkrun,
         ]
     );
-
-    const cursor = useMemo(() => {
-        return isPending ? "wait" : "auto";
-    }, [isPending]);
 
     const parkrunPoints = useMemo(
         () =>
@@ -260,7 +246,6 @@ export default function ParkrunsMap() {
             }}
             minZoom={3}
             mapStyle="mapbox://styles/mapbox/streets-v12"
-            cursor={cursor}
         >
             <Source
                 id="parkrun_polygons"
