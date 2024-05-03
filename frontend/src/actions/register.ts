@@ -9,6 +9,7 @@ import { getUserByUsername } from "@/data/user";
 
 export type RegisterResult = {
     success: boolean;
+    username: string | null;
     code: string;
 };
 
@@ -18,7 +19,7 @@ export const register = async (
     const validatedFields = RegisterSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        return { success: false, code: "invalid_fields" };
+        return { success: false, username: null, code: "invalid_fields" };
     }
 
     const { username, password, name } = validatedFields.data;
@@ -27,7 +28,7 @@ export const register = async (
     const existingUser = await getUserByUsername(username);
 
     if (existingUser) {
-        return { success: false, code: "username_taken" };
+        return { success: false, username: null, code: "username_taken" };
     }
 
     try {
@@ -48,5 +49,5 @@ export const register = async (
         throw error;
     }
 
-    return { success: true, code: "success" };
+    return { success: true, username: username, code: "success" };
 };

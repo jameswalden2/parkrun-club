@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -23,16 +23,16 @@ import { FormSuccess } from "@/components/forms/FormSuccess";
 import { LoginResult, login } from "@/actions/login";
 import InfoBoxWrapper from "@/components/wrappers/InfoBoxWrapper";
 
-export const LoginForm = () => {
-    const searchParams = useSearchParams();
+type LoginFormProps = {
+    username?: string | undefined;
+};
 
+export const LoginForm = ({ username }: LoginFormProps) => {
     const [loginResult, setLoginResult] = useState<LoginResult>({
         success: false,
         code: "",
     });
     const [isPending, startTransition] = useTransition();
-
-    const registerSuccess = searchParams.get("registerSuccess");
 
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
@@ -41,6 +41,10 @@ export const LoginForm = () => {
             password: "",
         },
     });
+
+    useEffect(() => {
+        form.reset({ username: username });
+    }, [form, username]);
 
     const onSubmit = (values: z.infer<typeof LoginSchema>) => {
         startTransition(() => {
@@ -60,10 +64,10 @@ export const LoginForm = () => {
 
     return (
         <CardWrapper
-            headerLabel="Welcome back"
+            headerLabel={username ? "Welcome back" : "Login below"}
             headerTitle="🔐 Login"
             backButtonLabel="Don't have an account? Create one here"
-            backButtonHref="/auth/register"
+            backButtonHref="/auth?activeTab=register"
         >
             <Form {...form}>
                 <form
@@ -71,7 +75,7 @@ export const LoginForm = () => {
                     className="space-y-6"
                 >
                     <div className="space-y-4">
-                        {registerSuccess == "true" && (
+                        {username && (
                             <InfoBoxWrapper success>
                                 You successfully registered! Log in below!
                             </InfoBoxWrapper>
@@ -106,6 +110,7 @@ export const LoginForm = () => {
                                             disabled={isPending}
                                             placeholder="******"
                                             type="password"
+                                            autoFocus={username != undefined}
                                         />
                                     </FormControl>
                                     {/* <Button
