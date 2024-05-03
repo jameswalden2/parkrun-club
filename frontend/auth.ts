@@ -16,7 +16,8 @@ export const {
     unstable_update,
 } = NextAuth({
     pages: {
-        signIn: "/auth/login",
+        signIn: "/auth",
+        newUser: "/auth",
         error: "/auth/error",
     },
     adapter: PrismaAdapter(db) as Adapter,

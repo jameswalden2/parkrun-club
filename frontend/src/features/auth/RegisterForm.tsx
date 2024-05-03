@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 export const RegisterForm = () => {
     const [registerResult, setRegisterResult] = useState<RegisterResult>({
         success: false,
+        username: null,
         code: "",
     });
     const [isPending, startTransition] = useTransition();
@@ -45,11 +46,16 @@ export const RegisterForm = () => {
             register(values)
                 .then((data) => {
                     setRegisterResult(data);
-                    router.push("/auth/login?registerSuccess=true");
+                    if (data.username) {
+                        router.push(
+                            `/auth?activeTab=login&username=${data.username}`
+                        );
+                    }
                 })
                 .catch((error) => {
                     setRegisterResult({
                         success: false,
+                        username: null,
                         code: "unknown_error",
                     });
                 });
@@ -61,7 +67,7 @@ export const RegisterForm = () => {
             headerLabel="Create an account"
             headerTitle="🔏 Register"
             backButtonLabel="Already have an account? Login here"
-            backButtonHref="/auth/login"
+            backButtonHref="/auth?activeTab=login"
         >
             <Form {...form}>
                 <form
