@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Divide, Trees } from "lucide-react";
-import clsx from "clsx";
+import { Trees } from "lucide-react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
 

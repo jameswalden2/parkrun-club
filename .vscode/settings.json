@@ -19,4 +19,5 @@
   "editor.tokenColorCustomizations": {
     "functions": "#ee2fbb"
   },
+  "circleci.persistedProjectSelection": [],
  }
