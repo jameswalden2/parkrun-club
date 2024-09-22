@@ -44,7 +44,7 @@ Steps to deploy locally using minikube and helm:
 
 # Backend
 
-FastAPI app.
+Contains the ETL processes for parkrun data.
 
 ## Linting
 
